@@ -7,68 +7,17 @@ local lP = game:GetService("Players").LocalPlayer
 local pN = lP.Name
 local pC = game.Workspace.Characters:WaitForChild(pN)
 
--- Ray Info
-local cC = workspace.CurrentCamera
-local rH = -4
-
 -- Display Gui
 local nG = Instance.new("ScreenGui", lP.PlayerGui)
-local gF = Instance.new("Frame", nG)
-gF.BackgroundTransparency = 1
-gF.Position = UDim2.new(0.0075,0,0.62,0)
-gF.Size = UDim2.new(0.2,0,0.18,0)
-local gTB1 = Instance.new("TextBox", gF)
-gTB1.Name = "Box1"
-gTB1.BackgroundTransparency = 1
-gTB1.Size = UDim2.new(1,0,0.2,0)
-gTB1.Position = UDim2.new(0,0,0,0)
-gTB1.Text = ""
-gTB1.TextXAlignment = "Left"
-gTB1.TextColor3 = Color3.new(255,255,255)
-gTB1.TextSize = 24
-gTB1.Font = Enum.Font.SourceSansBold
-local gTB2 = Instance.new("TextBox", gF)
-gTB2.Name = "Box2"
-gTB2.BackgroundTransparency = 1
-gTB2.Size = UDim2.new(1,0,0.2,0)
-gTB2.Position = UDim2.new(0,0,0.2,0)
-gTB2.Text = ""
-gTB2.TextXAlignment = "Left"
-gTB2.TextColor3 = Color3.new(255,255,255)
-gTB2.TextSize = 24
-gTB2.Font = Enum.Font.SourceSansBold
-local gTB3 = Instance.new("TextBox", gF)
-gTB3.Name = "Box3"
-gTB3.BackgroundTransparency = 1
-gTB3.Size = UDim2.new(1,0,0.2,0)
-gTB3.Position = UDim2.new(0,0,0.4,0)
-gTB3.Text = ""
-gTB3.TextXAlignment = "Left"
-gTB3.TextColor3 = Color3.new(255,255,255)
-gTB3.TextSize = 24
-gTB3.Font = Enum.Font.SourceSansBold
-local gTB4 = Instance.new("TextBox", gF)
-gTB4.Name = "Box4"
-gTB4.BackgroundTransparency = 1
-gTB4.Size = UDim2.new(1,0,0.2,0)
-gTB4.Position = UDim2.new(0,0,0.6,0)
-gTB4.Text = ""
-gTB4.TextXAlignment = "Left"
-gTB4.TextColor3 = Color3.new(255,255,255)
-gTB4.TextSize = 24
-gTB4.Font = Enum.Font.SourceSansBold
-local gTB5 = Instance.new("TextBox", gF)
-gTB5.Name = "Box5"
-gTB5.BackgroundTransparency = 1
-gTB5.Size = UDim2.new(1,0,0.2,0)
-gTB5.Position = UDim2.new(0,0,0.8,0)
-gTB5.Text = ""
-gTB5.TextXAlignment = "Left"
-gTB5.TextColor3 = Color3.new(255,255,255)
-gTB5.TextSize = 24
-gTB5.Font = Enum.Font.SourceSansBold
+local gF = Instance.new("Frame", nG); gF.BackgroundTransparency = 1; gF.Position = UDim2.new(0.0075,0,0.62,0); gF.Size = UDim2.new(0.2,0,0.18,0)
+local gTB1 = Instance.new("TextBox", gF); gTB1.Name = "Box1"; gTB1.BackgroundTransparency = 1; gTB1.Size = UDim2.new(1,0,0.2,0); gTB1.Position = UDim2.new(0,0,0,0); gTB1.Text = ""; gTB1.TextXAlignment = "Left"; gTB1.TextColor3 = Color3.new(255,255,255); gTB1.TextSize = 24; gTB1.Font = Enum.Font.SourceSansBold
+local gTB2 = Instance.new("TextBox", gF); gTB2.Name = "Box2"; gTB2.BackgroundTransparency = 1; gTB2.Size = UDim2.new(1,0,0.2,0); gTB2.Position = UDim2.new(0,0,0.2,0); gTB2.Text = ""; gTB2.TextXAlignment = "Left"; gTB2.TextColor3 = Color3.new(255,255,255); gTB2.TextSize = 24; gTB2.Font = Enum.Font.SourceSansBold
+local gTB3 = Instance.new("TextBox", gF); gTB3.Name = "Box3"; gTB3.BackgroundTransparency = 1; gTB3.Size = UDim2.new(1,0,0.2,0); gTB3.Position = UDim2.new(0,0,0.4,0); gTB3.Text = ""; gTB3.TextXAlignment = "Left"; gTB3.TextColor3 = Color3.new(255,255,255); gTB3.TextSize = 24; gTB3.Font = Enum.Font.SourceSansBold
+local gTB4 = Instance.new("TextBox", gF); gTB4.Name = "Box4"; gTB4.BackgroundTransparency = 1; gTB4.Size = UDim2.new(1,0,0.2,0); gTB4.Position = UDim2.new(0,0,0.6,0); gTB4.Text = ""; gTB4.TextXAlignment = "Left"; gTB4.TextColor3 = Color3.new(255,255,255); gTB4.TextSize = 24; gTB4.Font = Enum.Font.SourceSansBold
+local gTB5 = Instance.new("TextBox", gF); gTB5.Name = "Box5"; gTB5.BackgroundTransparency = 1; gTB5.Size = UDim2.new(1,0,0.2,0); gTB5.Position = UDim2.new(0,0,0.8,0); gTB5.Text = ""; gTB5.TextXAlignment = "Left"; gTB5.TextColor3 = Color3.new(255,255,255); gTB5.TextSize = 24; gTB5.Font = Enum.Font.SourceSansBold
 
 -- Variables
+local rH = -3.5
 local isJumping = false
 local recentlyJumped = false
 local timer = nil
@@ -174,7 +123,7 @@ RS.RenderStepped:Connect(function()
 				print("J: " .. numJumps + 1 .. " | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. numStrafes)
 			end
 			
-			wait(0.1)
+			wait(0.15)
 			recentlyJumped = false
 			numStrafes = 0
 		end
