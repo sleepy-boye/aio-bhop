@@ -28,7 +28,7 @@ local pdC = false
 local iR = false
 local rJ = false
 
-local rH = -3.85
+local rH = -4
 local sV = 0
 local nS = 0
 local nJ = 0
