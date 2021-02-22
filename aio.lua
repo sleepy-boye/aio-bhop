@@ -29,6 +29,7 @@ local iR = false
 local rJ = false
 
 local rH = -3.5
+local guiP = 0
 local sV = 0
 local nS = 0
 local nJ = 0
@@ -67,29 +68,33 @@ local function addCommand(name,validValues,func)
 	remotecall("AddClientCommand",name,validValues,tostring(func))
 end
 
-addCommand("jahGui", {"Number"}, function(rawr)
-	if rawr == 1 then
-		pdC = true
+addCommand("jahGui", {}, function()
+	pdC = not pdC
+	if pdC == true then
 		nG.Enabled = true
-	elseif rawr == 0 then
-		pdC = false
+	else
 		nG.Enabled = false
 		gTB1.Text = ""
 		gTB2.Text = ""
 		gTB3.Text = ""
 		gTB4.Text = ""
 		gTB5.Text = ""
-	else
-		-- nothing
 	end
 end)
 
-addCommand("cG", {"Number"}, function(rawr)
-	if rawr == 1 then
+addCommand("cG", {}, function()
+	if guiP == 0 then
+		guiP = 1
 		lP.PlayerGui.QBox.Frame.ImageLabel.Position = UDim2.new(1,-1170,1,-790)
-	elseif rawr == 0 then
+	elseif guiP == 1 then
+		guiP = 0
 		lP.PlayerGui.QBox.Frame.ImageLabel.Position = UDim2.new(1,-1170,1,-805)
 	end
+end)
+
+addCommand("tG", {"Number"}, function(num)
+	lP.PlayerGui.QBox.Frame.ImageLabel.ImageTransparency = num
+	lP.PlayerGui.QBox.Frame.ImageLabel.ImageLabel.ImageTransparency = num
 end)
 
 ---------------------------------------------------------------------
@@ -109,7 +114,7 @@ UIS.InputChanged:Connect(function(input)
 			sV = 2
 			nS = nS + 1
 		end
-		
+
 		if UIS:IsKeyDown(Enum.KeyCode.D) then
 			gS = gS + 1
 			tS = tS + 1
@@ -126,7 +131,7 @@ UIS.InputChanged:Connect(function(input)
 			sV = 1
 			nS = nS + 1
 		end
-		
+
 		if UIS:IsKeyDown(Enum.KeyCode.A) then
 			gS = gS + 1
 			tS = tS + 1
@@ -156,7 +161,7 @@ UIS.InputBegan:Connect(function(input)
 		print("")
 		print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 	elseif input.KeyCode == Enum.KeyCode.Space and iR == true and pdC == true then
-		
+
 	end	
 end)
 
@@ -164,10 +169,10 @@ local function pogDog()
 	if tonumber(timegui.Text:sub(13,15)) > 0 or tonumber(timegui.Text:sub(10,11)) > 0 or tonumber(timegui.Text:sub(7,8)) > 0 then
 		local ray = Ray.new(pC.Torso.CFrame.Position, Vector3.new(0, rH, 0))
 		local hit = workspace:FindPartOnRayWithIgnoreList(ray, {pC})
-		
+
 		if hit and rJ == false and iR == true and UIS:IsKeyDown(Enum.KeyCode.Space) then
 			rJ = true
-			
+
 			if nJ == 0 then
 				nJ = nJ + 2
 				gTB1.Text = ""
@@ -311,12 +316,12 @@ local function pogDog()
 				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
 				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 			end
-			
+
 			wait(0.15)
 			rJ = false
 			nS = 0
 		end
-		
+
 		iR = true
 	else
 		iR = false
@@ -333,7 +338,7 @@ RS.RenderStepped:Connect(function()
 	if pdC == true then
 		pogDog()
 	end
-	
+
 	for i,v in pairs(game.Workspace:GetChildren()) do
 		if v:IsA("Model") and string.find(v.Name, "Bot") then
 			v.Parent = game.Workspace.Characters
