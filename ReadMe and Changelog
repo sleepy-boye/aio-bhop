@@ -25,3 +25,6 @@ Version 1.1.1
 Version 1.1.2
   Console now shows when a new run is started
   Console now shows sixth jump
+
+Version 1.1.3
+  Raycast for jumps now ignores crossing bot paths
