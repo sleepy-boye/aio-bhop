@@ -21,3 +21,7 @@ Version 1.1
 Version 1.1.1
   Made gui reset all bars right as you do your first jump, it usually resets after the first one but this just makes it a bit more clear.
   Made sixth jump text glow
+
+Version 1.1.2
+  Console now shows when a new run is started
+  Console now shows sixth jump
