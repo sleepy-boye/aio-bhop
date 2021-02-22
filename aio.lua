@@ -92,7 +92,7 @@ addCommand("cG", {}, function()
 	end
 end)
 
-addCommand("tG", {"Number"}, function(num)
+addCommand("gT", {"Number"}, function(num)
 	lP.PlayerGui.QBox.Frame.ImageLabel.ImageTransparency = num
 	lP.PlayerGui.QBox.Frame.ImageLabel.ImageLabel.ImageTransparency = num
 end)
