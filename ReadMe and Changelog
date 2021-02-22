@@ -7,10 +7,15 @@ How to Execute:
     loadstring(game:HttpGet("https://raw.githubusercontent.com/sleepy-boye/aio-bhop/main/aio.lua",true))()
 
 Current Commands:
-  /jahGui [1 to enable, 0 to disable]
+  /jahGui
     Features: Creates a gui in the bottom left which shows which jump you are on, your sync percentage, speed on that jump, and how many strafes you took that jump.
-  /cG [1 for no crosshair version, 0 for crosshair version]
+    
+  /cG
     Features: Centers the gauge above the middle of your screen or crosshair (Fullscreen 1920x1080). Make sure you have gauge open first.
+    Cycles between two gauge positions, right above center or above crosshair.
+
+  /gT [number]
+    Features: Changes the transparency of the gauge to whatever number you put.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     -------------------------------------------------- { Changelog } --------------------------------------------------                    
@@ -33,8 +38,13 @@ Version 1.1.3
 
 Version 1.2
   Added /cG Command
+    Features: Centers the gauge above the middle of your screen or crosshair (Fullscreen 1920x1080). Make sure you have gauge open first.
   First jump color resets if you /r'ed on 6th Jump
   
 Verison 1.2.1
   Made it so 6th jump always visible afterwards
   Made it so bot paths are ACTUALLY ignored (forces bots into Characters folder)
+
+Version 1.3
+  Added /gT Command
+    Features: Changes the transparency of the gauge to whatever number you put.
