@@ -17,3 +17,7 @@ Current Commands:
 Version 1.1
   Added support for custom commands
   Added jahGui
+
+Version 1.1.1
+  Made gui reset all bars right as you do your first jump, it usually resets after the first one but this just makes it a bit more clear.
+  Made sixth jump text glow
