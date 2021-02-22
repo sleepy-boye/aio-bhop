@@ -300,11 +300,10 @@ local function pogDog()
 				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 			elseif nJ > 3 and nJ ~= 5 then
 				nJ = nJ + 1
-				gTB1.Text = gTB2.Text
-				gTB2.Text = gTB3.Text
+				gTB2.Text = "--------------------------"
 				gTB3.Text = gTB4.Text
 				gTB4.Text = gTB5.Text
-				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB1.TextColor3 = Color3.new(0,255,0)
 				gTB2.TextColor3 = Color3.new(255,255,255)
 				gTB3.TextColor3 = Color3.new(255,255,255)
 				gTB4.TextColor3 = Color3.new(255,255,255)
