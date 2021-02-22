@@ -334,4 +334,10 @@ RS.RenderStepped:Connect(function()
 	if pdC == true then
 		pogDog()
 	end
+	
+	for i,v in pairs(game.Workspace:GetChildren()) do
+		if v:IsA("Model") and string.find(v.Name, "Bot") then
+			v.Parent = game.Workspace.Characters
+		end
+	end
 end)
