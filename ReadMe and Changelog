@@ -15,4 +15,5 @@ Current Commands:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Version 1.1
-  Added commands for toggling
+  Added support for custom commands
+  Added jahGui
