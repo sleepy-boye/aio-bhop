@@ -10,6 +10,7 @@ local UIS = game:GetService("UserInputService")
 local lP = game:GetService("Players").LocalPlayer
 local pN = lP.Name
 local pC = game.Workspace.Characters:WaitForChild(pN)
+local cL = game.Workspace.Characters
 
 local nG = Instance.new("ScreenGui", lP.PlayerGui); nG.Enabled = false
 local gF = Instance.new("Frame", nG); gF.BackgroundTransparency = 1; gF.Position = UDim2.new(0.0075,0,0.62,0); gF.Size = UDim2.new(0.2,0,0.18,0)
@@ -154,7 +155,7 @@ end)
 local function pogDog()
 	if tonumber(timegui.Text:sub(13,15)) > 0 or tonumber(timegui.Text:sub(10,11)) > 0 or tonumber(timegui.Text:sub(7,8)) > 0 then
 		local ray = Ray.new(pC.Torso.CFrame.Position, Vector3.new(0, rH, 0))
-		local hit = workspace:FindPartOnRayWithIgnoreList(ray, {pC})
+		local hit = workspace:FindPartOnRayWithIgnoreList(ray, {cL})
 		
 		if hit and rJ == false and iR == true and UIS:IsKeyDown(Enum.KeyCode.Space) then
 			rJ = true
