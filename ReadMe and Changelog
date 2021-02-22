@@ -2,6 +2,10 @@
                      -------------------------------------------------- { Read Me } --------------------------------------------------                     
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+How to Execute:
+  In synapse paste:
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/sleepy-boye/aio-bhop/main/aio.lua",true))()
+
 Current Commands:
   /jahGui [1 to enable, 0 to disable]
     Features: Creates a gui in the bottom left which shows which jump you are on, your sync percentage, speed on that jump, and how many strafes you took that jump.
