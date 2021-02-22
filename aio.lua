@@ -137,6 +137,10 @@ UIS.InputBegan:Connect(function(input)
 	if input.KeyCode == Enum.KeyCode.Space and iR == false and pdC == true then
 		iR = true
 		nJ = nJ + 1
+		gTB1.Text = ""
+		gTB2.Text = ""
+		gTB3.Text = ""
+		gTB4.Text = ""
 		gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
 		print("Starting run!")
 	elseif input.KeyCode == Enum.KeyCode.Space and iR == true and pdC == true then
@@ -160,6 +164,11 @@ local function pogDog()
 				gTB2.Text = ""
 				gTB3.Text = ""
 				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
 				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
 				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 			elseif nJ == 1 then
@@ -168,6 +177,11 @@ local function pogDog()
 				gTB2.Text = ""
 				gTB3.Text = gTB4.Text
 				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
 				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
 				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 			elseif nJ == 2 then
@@ -176,6 +190,11 @@ local function pogDog()
 				gTB2.Text = gTB3.Text
 				gTB3.Text = gTB4.Text
 				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
 				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
 				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 			elseif nJ == 3 then
@@ -184,14 +203,102 @@ local function pogDog()
 				gTB2.Text = gTB3.Text
 				gTB3.Text = gTB4.Text
 				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
 				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
 				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
-			elseif nJ > 3 then
+			elseif nJ == 4 then
 				nJ = nJ + 1
 				gTB1.Text = gTB2.Text
 				gTB2.Text = gTB3.Text
 				gTB3.Text = gTB4.Text
 				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
+				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
+				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
+			elseif nJ == 5 then
+				nJ = nJ + 1
+				gTB1.Text = gTB2.Text
+				gTB2.Text = gTB3.Text
+				gTB3.Text = gTB4.Text
+				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(0,255,0)
+				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
+				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
+			elseif nJ == 6 then
+				nJ = nJ + 1
+				gTB1.Text = gTB2.Text
+				gTB2.Text = gTB3.Text
+				gTB3.Text = gTB4.Text
+				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(0,255,0)
+				gTB5.TextColor3 = Color3.new(255,255,255)
+				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
+				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
+			elseif nJ == 7 then
+				nJ = nJ + 1
+				gTB1.Text = gTB2.Text
+				gTB2.Text = gTB3.Text
+				gTB3.Text = gTB4.Text
+				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(0,255,0)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
+				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
+				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
+			elseif nJ == 8 then
+				nJ = nJ + 1
+				gTB1.Text = gTB2.Text
+				gTB2.Text = gTB3.Text
+				gTB3.Text = gTB4.Text
+				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(0,255,0)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
+				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
+				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
+			elseif nJ == 9 then
+				nJ = nJ + 1
+				gTB1.Text = gTB2.Text
+				gTB2.Text = gTB3.Text
+				gTB3.Text = gTB4.Text
+				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(0,255,0)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
+				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
+				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
+			elseif nJ > 3 and nJ ~= 5 then
+				nJ = nJ + 1
+				gTB1.Text = gTB2.Text
+				gTB2.Text = gTB3.Text
+				gTB3.Text = gTB4.Text
+				gTB4.Text = gTB5.Text
+				gTB1.TextColor3 = Color3.new(255,255,255)
+				gTB2.TextColor3 = Color3.new(255,255,255)
+				gTB3.TextColor3 = Color3.new(255,255,255)
+				gTB4.TextColor3 = Color3.new(255,255,255)
+				gTB5.TextColor3 = Color3.new(255,255,255)
 				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
 				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 			end
