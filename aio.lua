@@ -142,9 +142,12 @@ UIS.InputBegan:Connect(function(input)
 		gTB3.Text = ""
 		gTB4.Text = ""
 		gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
-		print("Starting run!")
+		print("")
+		print("--------- { NEW RUN } ---------")
+		print("")
+		print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 	elseif input.KeyCode == Enum.KeyCode.Space and iR == true and pdC == true then
-		print("Already running!")
+		
 	end	
 end)
 
@@ -154,8 +157,6 @@ local function pogDog()
 		local hit = workspace:FindPartOnRayWithIgnoreList(ray, {pC})
 		
 		if hit and rJ == false and iR == true and UIS:IsKeyDown(Enum.KeyCode.Space) then
-			print("hi")
-			print(nJ)
 			rJ = true
 			
 			if nJ == 0 then
@@ -235,7 +236,7 @@ local function pogDog()
 				gTB4.TextColor3 = Color3.new(255,255,255)
 				gTB5.TextColor3 = Color3.new(0,255,0)
 				gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
-				print("J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
+				print("*** SIXTH JUMP *** " .. "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS)
 			elseif nJ == 6 then
 				nJ = nJ + 1
 				gTB1.Text = gTB2.Text
