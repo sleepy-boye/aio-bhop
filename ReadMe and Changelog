@@ -9,6 +9,8 @@ How to Execute:
 Current Commands:
   /jahGui [1 to enable, 0 to disable]
     Features: Creates a gui in the bottom left which shows which jump you are on, your sync percentage, speed on that jump, and how many strafes you took that jump.
+  /cG [1 for no crosshair version, 0 for crosshair version]
+    Features: Centers the gauge above the middle of your screen or crosshair (Fullscreen 1920x1080). Make sure you have gauge open first.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     -------------------------------------------------- { Changelog } --------------------------------------------------                    
@@ -16,7 +18,7 @@ Current Commands:
 
 Version 1.1
   Added support for custom commands
-  Added jahGui
+  Added jahGui and /jahGui Command
 
 Version 1.1.1
   Made gui reset all bars right as you do your first jump, it usually resets after the first one but this just makes it a bit more clear.
@@ -28,3 +30,6 @@ Version 1.1.2
 
 Version 1.1.3
   Raycast for jumps now ignores crossing bot paths
+
+Version 1.2
+  Added /cG Command
