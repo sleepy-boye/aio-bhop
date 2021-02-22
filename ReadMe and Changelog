@@ -34,3 +34,7 @@ Version 1.1.3
 Version 1.2
   Added /cG Command
   First jump color resets if you /r'ed on 6th Jump
+  
+Verison 1.2.1
+  Made it so 6th jump always visible afterwards
+  Made it so bot paths are ACTUALLY ignored (forces bots into Characters folder)
