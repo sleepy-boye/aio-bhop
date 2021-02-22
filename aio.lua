@@ -149,6 +149,7 @@ UIS.InputBegan:Connect(function(input)
 		gTB2.Text = ""
 		gTB3.Text = ""
 		gTB4.Text = ""
+		gTB5.TextColor3 = Color3.new(255,255,255)
 		gTB5.Text = "J: " .. nJ .. "| Sync: " .. (math.floor((sP * 10^4) + 0.5)/(10^2)) .. "% | Spd: " .. tonumber(speedgui.Text:sub(0,-4)) .. " | Strafes: " .. nS
 		print("")
 		print("--------- { NEW RUN } ---------")
