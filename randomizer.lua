@@ -130,7 +130,7 @@ local styleWeights = {
     Turbo = 0, --Nonfunctional
     Flashlight = 0, --Nonfunctional
     ["Landing Light"] = 0, --Nonfunctional
-    ["Drunk Mode"] = 20,
+    ["Drunk Mode"] = 0,
 }
 
 -- Style settings
