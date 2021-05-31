@@ -84,7 +84,7 @@ end
 -- Custom Commands
 addCommand("setdefs", {}, function()
 	pFOV = pInfo.BaseFOV
-    pSens = pInfo.Sensitivity
+	pSens = pInfo.Sensitivity
 end)
 
 -- Establish setGain
