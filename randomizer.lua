@@ -193,7 +193,7 @@ local styleWeights = {
     ["Landing Light"] = 0, --Nonfunctional
     ["Drunk Mode"] = 0, -- Broken
     ["Low Gravity"] = 20,
-    ["Third Person"] = 500,
+    ["Third Person"] = 10,
 }
 
 -- Style settings
