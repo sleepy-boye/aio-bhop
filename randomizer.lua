@@ -3,11 +3,12 @@ local RS = game:GetService("RunService")
 local UIS = game:GetService("UserInputService")
 
 -- Player Info
-local player = game.Players.LocalPlayer; local pName = player.Name; local pC = game.Workspace.Characters:WaitForChild(pName)
+local player = game.Players.LocalPlayer; local pName = player.Name; local pC = game.Workspace.Characters:WaitForChild(pName); local pCam = game.Workspace.Camera
 
 -- CoreGuis
 local allguis = game.Players.LocalPlayer.PlayerGui:GetDescendants()
 local function gettimegui() for i,v in pairs(allguis) do if v.ClassName == "TextLabel" and string.find(v.Text,"Time: ") then return(v) end end end repeat allguis = game.Players.LocalPlayer.PlayerGui:GetDescendants() wait(1) timegui = gettimegui() until timegui
+local function getspeedgui() for i,v in pairs(allguis) do if v.ClassName == "TextLabel" and string.find(v.Text,"u/s") then return(v) end end end repeat allguis = game.Players.LocalPlayer.PlayerGui:GetDescendants() wait(1) speedgui = getspeedgui() until speedgui
 --local function getspecgui() for i,v in pairs(allguis) do if v.ClassName == "TextLabel" and string.find(v.Text,"Change View") then return(v) end end end repeat allguis = game.Players.LocalPlayer.PlayerGui:GetDescendants() wait(1) specgui = getspecgui() until specgui
 
 -- StyleGui
@@ -21,9 +22,10 @@ local pFOV = 94.9
 local pSens = 0.2
 local rerollStages = {2, 3} -- Insert stages where you want to add a reroll to player on
 local hardStages = {} -- Insert stages you want to only have set styles on
-local curStyle = "Auto"; local rerollStyle; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; 
+local curStyle = "Auto"; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; local pBlock; local pLight;
 local mapName; local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
-local gainVar; local curStrafeDir = 1; local curFOV = 94.9; local fovCons = 0;
+local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV = 94.9; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer= false;
+
 
 -- Grab Map Name
 for i,v in pairs(game.Workspace:GetDescendants()) do
@@ -49,6 +51,12 @@ for i,v in pairs(getgc(true)) do
                     gainVar = v
                 end
             end
+            for u,b in pairs(debug.getupvalues(v)) do
+                if (b == -50 or b == -100) and debug.getinfo(v)['nups'] == 1 then --Surf has grav 50, bhop grav 100 --Use find since the source is a full path name
+                    gravVar = v
+                    originalGrav = b
+                end
+            end
         end)
     end
 end
@@ -56,6 +64,11 @@ end
 -- Establish setGain
 local function setGain(num)
     debug.setconstant(gainVar, 1, 2.7 * num)
+end
+
+-- Establish setGravity
+local function setGravity(num)
+    debug.setupvalue(gravVar,1,originalGrav*num)
 end
 
 -- Establish setKeys
@@ -85,58 +98,58 @@ end
 -- Establish Lighting
 local function setLightMode(num)
     if num == 1 then -- Natural Light
+        game.Lighting.Ambient = Color3.fromRGB(0,0,0)
+        game.Lighting.Brightness = 1
         game.Lighting.FogColor = Color3.new(0,0,0)
-      game.Lighting.FogEnd = 5000
-     game.Lighting.Brightness = 1
+        game.Lighting.FogEnd = 5000
+        game.Lighting.OutdoorAmbient = Color3.fromRGB(173,173,173)
     elseif num == 2 then -- Foggy Nights Mode
+        game.Lighting.Ambient = Color3.fromRGB(0,0,0)
+        game.Lighting.Brightness = 1
         game.Lighting.FogColor = Color3.new(0,0,0)
         game.Lighting.FogEnd = 17.5
-        game.Lighting.Brightness = 1
+        game.Lighting.OutdoorAmbient = Color3.fromRGB(173,173,173)
     elseif num == 3 then -- Flashlight Mode
+        game.Lighting.Ambient = Color3.fromRGB(0,0,0)
+        game.Lighting.Brightness = 0
+        game.Lighting.FogEnd = 5000
+        game.Lighting.OutdoorAmbient = Color3.fromRGB(0,0,0)
+        game.Lighting.TimeOfDay = "22:00:00"
     elseif num == 4 then -- Landing Light Dark Mode
     end
 end
-
---[[ EACH STYLE ODDS MEANING
-    s1 = Half-Sideways, s2 = Auto, s3 = Backwards, s4 = A-Only, s5 = W-Only
-    s6 = Sideways, s7 = Foggy Nights, s8 = Faste, s9 = Slow, s10 = Timescale 0.5
-    s11 = Timescale 1.5, s12 = D-Only, s13 = 60 FOV, s14 = Gain w/ time, s15 = Velocity Cap 
-    s16 = Gain faster right strafes, s17 = Gain faster left strafes, s18 = Invis, s19 = Turbo, s20 = Flashlight
-    s21 = Landing Light, s22 = Drunk Mode (FOV In and Out)
-
-    TURBO = SLOW AND THEN PRESS BUTTON FOR A SHORT BOOST OF SPEED (ON A TIMER)
-]]
 
 -- Style odds, but revolutionised
 local styleWeights = {
     HSW = 20,
     Auto = 20,
-    Backwards = 20,
-    ["A-Only"] = 20, --has a dash in it
-    ["W-Only"] = 20,
-    Sideways = 20,
-    ["Foggy Nights"] = 20,
-    Faste = 20,
-    Slow = 20,
-    ["Timescale 0.5x"] = 20,
-    ["Timescale 1.333x"] = 20,
-    ["D-Only"] = 20,
-    ["FOV 60"] = 20,
-    ["Gain with Time"] = 0, --Nonfunctional
-    ["Velocity Cap"] = 0, --Nonfunctional
-    ["Right Faste"] = 20,
-    ["Left Faste"] = 20,
-    ["Invisible Blocks"] = 0, --Nonfunctional
-    Turbo = 0, --Nonfunctional
-    Flashlight = 0, --Nonfunctional
+    Backwards = 2,
+    ["A-Only"] = 15, --has a dash in it
+    ["W-Only"] = 2,
+    Sideways = 5,
+    ["Foggy Nights"] = 10,
+    Faste = 6,
+    Slow = 12,
+    ["Timescale 0.5x"] = 20, -- Does not work on main because quat is fucking braindead
+    ["Timescale 1.333x"] = 15, -- Does not work on main because quat is fucking braindead
+    ["D-Only"] = 10,
+    ["FOV 60"] = 10, -- Sets FOV to 60 and sets sens accordingly
+    ["Gain with Time"] = 10, -- Gains start at 0.5 below 18 speed, every 0.1 seconds goes up 0.02 until you go back below 18. (10 seconds = 2.5)
+    ["Velocity Cap"] = 0, -- Nonfunctional
+    ["Right Faste"] = 10, -- LEFT STRAFES: 0.5x Gain, RIGHT STRAFES: 3x Gain
+    ["Left Faste"] = 10, -- LEFT STRAFES: 3 Gain, RIGHT STRAFES: 0.5x Gain
+    ["Invisible Blocks"] = 0, -- Only use on maps where there is decals on every block (I will make exception soon)
+    Turbo = 0, --Nonfunctional (Will )
+    Flashlight = 0, --Nonfunctional (Will be super dark with a camera shining infront of player)
     ["Landing Light"] = 0, --Nonfunctional
-    ["Drunk Mode"] = 0,
+    ["Drunk Mode"] = 0, -- Broken
+    ["Low Gravity"] = 20,
 }
 
 -- Style settings
 local styleSettings = {
     --If keys is not set, the handler assumes the value is {1,1,1,1}
-    --If gains, light, or tscale are not set, the handler assumes the value is 1
+    --If gains, light, grav, or tscale are not set, the handler assumes the value is 1
     --If fov is not set, the handler assumes the value is pFOV
     HSW = {keys={2,1,1,1}},
     Auto = {}, --Pure default, can just have empty :troll:
@@ -151,7 +164,7 @@ local styleSettings = {
     ["Timescale 1.333x"] = {tscale=1.333},
     ["D-Only"] = {keys={0,0,0,1}},
     ["FOV 60"] = {fov=60},
-    ["Gain with Time"] = {}, --Nonfunctional
+    ["Gain with Time"] = {},
     ["Velocity Cap"] = {}, -- Nonfunctional
     ["Right Faste"] = {},
     ["Left Faste"] = {},
@@ -160,6 +173,7 @@ local styleSettings = {
     Flashlight = {}, --Nonfunctional
     ["Landing Light"] = {}, --Nonfunctional
     ["Drunk Mode"] = {},
+    ["Low Gravity"] = {grav=.6},
 }
 
 -- To pick styles
@@ -196,7 +210,8 @@ local function randomizeStyle(allowSameStyle)
     setLightMode(styleInfo["light"] or 1)
     setTimeScale(styleInfo["tscale"] or 1)
     setFOV(styleInfo["fov"] or pFOV)
-    --Style bending isnt required, as it is handled in RenderStepped
+    setGravity(styleInfo["grav"] or 1)
+    --Style bending isnt required, as it is handled in UIS by default later on
 end
 
 -- Click Reroll Button
@@ -289,6 +304,20 @@ RS.RenderStepped:Connect(function()
 
     if isRunning == true then
         rayFunction()
+
+        if curStyle == "Gain with Time" then
+            if (tonumber(speedgui.Text:sub(1,5))) > 18 and string.len(speedgui.Text) > 8 and timeGainBuffer == false then
+                timeGain = timeGain + 0.02
+                setGain(timeGain)
+                timeGainBuffer = true
+                wait(0.1)
+                timeGainBuffer = false
+            elseif (tonumber(speedgui.Text:sub(1,5))) <= 18 then
+                setGain(0.5)
+                timeGain = 0.5
+                timeGainBuffer = false
+            end
+        end
     else
         -- Nothing
     end
