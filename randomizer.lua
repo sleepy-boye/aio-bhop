@@ -54,9 +54,9 @@ for i,v in pairs(getgc(true)) do
             end
         end
         if rawget(v,"Call") and rawget(v,"Add") and rawget(v,"InitLast") and not remotecall then
-			remotecall = v["Call"]
-			remoteadd = v["Add"]
-		end
+		remotecall = v["Call"]
+		remoteadd = v["Add"]
+	end
     end
     if type(v) == 'function' then
         pcall(function()
