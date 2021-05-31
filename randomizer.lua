@@ -25,8 +25,20 @@ local rerollStages = {2, 3} -- Insert stages where you want to add a reroll to p
 local hardStages = {} -- Insert stages you want to only have set styles on
 local pFOV; local pSens; local curStyle = "Auto"; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; local pBlock; local pLight;
 local mapName; local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
-local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV = 94.9; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer= false;
-local remotecall = nil;
+local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV = 94.9; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer = false;
+local remotecall; local remoteadd; local remotesubscribe; local characterTransparency = 1
+
+-- Camera hooking
+local mt = getrawmetatable(game)
+local old__newindex = mt.__newindex
+setreadonly(mt,false)
+mt.__newindex = newcclosure(function(obj,property,val)
+    if curStyle == "Third Person" and property == "CoordinateFrame" and obj == pCam then
+        val += val.LookVector * -7
+    end
+    return old__newindex(obj,property,val)
+end)
+setreadonly(mt,true)
 
 -- Grab Map Name
 for i,v in pairs(game.Workspace:GetDescendants()) do
@@ -38,8 +50,8 @@ end
 -- getgc Functions and Tables
 for i,v in pairs(getgc(true)) do
     if type(v) == 'table' then
-        if rawget(v, 'Call') then
-            call = rawget(v, 'Call')
+        if rawget(v, "Call") then
+            call = rawget(v, "Call")
         end
         if rawget(v, "keys") and rawget(v, "id") then
             daKeys[v["id"]] = v
@@ -54,9 +66,10 @@ for i,v in pairs(getgc(true)) do
             end
         end
         if rawget(v,"Call") and rawget(v,"Add") and rawget(v,"InitLast") and not remotecall then
-		remotecall = v["Call"]
-		remoteadd = v["Add"]
-	end
+            remotecall = v["Call"]
+            remoteadd = v["Add"]
+            remotesubscribe = v["Subscribe"]
+        end
     end
     if type(v) == 'function' then
         pcall(function()
@@ -66,7 +79,7 @@ for i,v in pairs(getgc(true)) do
                 end
             end
             for u,b in pairs(debug.getupvalues(v)) do
-                if (b == -50 or b == -100) and debug.getinfo(v)['nups'] == 1 then --Surf has grav 50, bhop grav 100 --Use find since the source is a full path name
+                if (b == -50 or b == -100) and debug.getinfo(v)['nups'] == 1 then --Surf has grav 50, bhop grav 100
                     gravVar = v
                     originalGrav = b
                 end
@@ -77,14 +90,14 @@ end
 
 -- Add Commands
 local function addCommand(name,validValues,func)
-	remoteadd(tostring(func),func)
-	remotecall("AddClientCommand",name,validValues,tostring(func))
+    remoteadd(tostring(func),func)
+    remotecall("AddClientCommand",name,validValues,tostring(func))
 end
 
 -- Custom Commands
 addCommand("setdefs", {}, function()
-	pFOV = pInfo.BaseFOV
-	pSens = pInfo.Sensitivity
+    pFOV = pInfo.BaseFOV
+    pSens = pInfo.Sensitivity
 end)
 
 -- Establish setGain
@@ -145,12 +158,22 @@ local function setLightMode(num)
     end
 end
 
+-- Change Player Visibility (For Third Person)
+local function setPlayerVisibility(num)
+    characterTransparency = num
+    for _,part in next,pC:GetChildren() do
+        if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+            part.Transparency = num
+        end
+    end
+end
+
 -- Style odds, but revolutionised
 local styleWeights = {
     HSW = 20,
     Auto = 20,
     Backwards = 2,
-    ["A-Only"] = 15, --has a dash in it
+    ["A-Only"] = 15,
     ["W-Only"] = 2,
     Sideways = 5,
     ["Foggy Nights"] = 10,
@@ -170,6 +193,7 @@ local styleWeights = {
     ["Landing Light"] = 0, --Nonfunctional
     ["Drunk Mode"] = 0, -- Broken
     ["Low Gravity"] = 20,
+    ["Third Person"] = 500,
 }
 
 -- Style settings
@@ -200,6 +224,7 @@ local styleSettings = {
     ["Landing Light"] = {}, --Nonfunctional
     ["Drunk Mode"] = {},
     ["Low Gravity"] = {grav=.6},
+    ["Third Person"] = {},
 }
 
 -- To pick styles
@@ -217,9 +242,22 @@ local function pickFromWeight(weightTable)
     end
 end
 
+-- Change Style Function
+local function changeToStyle(style)
+    curStyle = style
+    local styleInfo = styleSettings[style]
+    local keyTable = styleInfo["keys"] or {1,1,1,1}
+    call('Chatted','Rolled '..style..'!')
+    setKeys(keyTable[1],keyTable[2],keyTable[3],keyTable[4])
+    setGain(styleInfo["gains"] or 1)
+    setLightMode(styleInfo["light"] or 1)
+    setTimeScale(styleInfo["tscale"] or 1)
+    setFOV(styleInfo["fov"] or pFOV)
+    setGravity(styleInfo["grav"] or 1)
+end
+
 -- Randomize Style Function
-local function randomizeStyle(allowSameStyle)
-    local satisfied = allowSameStyle
+local function randomizeStyle(satisfied)
     local chosenStyle = pickFromWeight(styleWeights)
     while not satisfied do
         chosenStyle = pickFromWeight(styleWeights)
@@ -227,17 +265,7 @@ local function randomizeStyle(allowSameStyle)
             satisfied = true
         end
     end
-    curStyle = chosenStyle
-    local styleInfo = styleSettings[curStyle]
-    local keyTable = styleInfo["keys"] or {1,1,1,1}
-    call('Chatted','Rolled '..curStyle..'!')
-    setKeys(keyTable[1],keyTable[2],keyTable[3],keyTable[4])
-    setGain(styleInfo["gains"] or 1)
-    setLightMode(styleInfo["light"] or 1)
-    setTimeScale(styleInfo["tscale"] or 1)
-    setFOV(styleInfo["fov"] or pFOV)
-    setGravity(styleInfo["grav"] or 1)
-    --Style bending isnt required, as it is handled in UIS by default later on
+    changeToStyle(chosenStyle)
 end
 
 -- Click Reroll Button
@@ -327,7 +355,6 @@ end)
 RS.RenderStepped:Connect(function()
     daText.Text = "- { Current Style : " .. curStyle .. " } -"
     daButton.Text = "-- { Reroll : " .. rerollCount .. " Left } --"
-
     if isRunning == true then
         rayFunction()
 
@@ -344,15 +371,21 @@ RS.RenderStepped:Connect(function()
                 timeGainBuffer = false
             end
         end
+
+        if curStyle == "Third Person" and characterTransparency == 1 then
+            setPlayerVisibility(0)
+        elseif not(curStyle == "Third Person") and characterTransparency == 0 then
+            setPlayerVisibility(1)
+        end
     else
         -- Nothing
     end
 
-    if (tonumber(timegui.Text:sub(13,15)) > 0 or tonumber(timegui.Text:sub(10,11)) > 0 or tonumber(timegui.Text:sub(7,8)) > 0) and isRunning == false then
+    if (tonumber(timegui.Text:sub(13,15)) > 0 or tonumber(timegui.Text:sub(10,11)) > 0 or tonumber(timegui.Text:sub(7,8)) > 0) and not isRunning then
         isRunning = true
         resetRecently = false
         print("New run has started!")
-    elseif tonumber(timegui.Text:sub(13,15)) == 0 and tonumber(timegui.Text:sub(10,11)) == 0 and tonumber(timegui.Text:sub(7,8)) == 0 and isRunning == true and resetRecently == false then
+    elseif tonumber(timegui.Text:sub(13,15)) == 0 and tonumber(timegui.Text:sub(10,11)) == 0 and tonumber(timegui.Text:sub(7,8)) == 0 and isRunning and not resetRecently then
         resetRecently = true
         isRunning = false
         print("Reset")
