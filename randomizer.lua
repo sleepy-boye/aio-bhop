@@ -35,7 +35,7 @@ for i,v in pairs(game.Workspace:GetDescendants()) do
     end
 end
 
--- getgc Call and Keys and Gain Functions
+-- getgc Functions and Tables
 for i,v in pairs(getgc(true)) do
     if type(v) == 'table' then
         if rawget(v, 'Call') then
