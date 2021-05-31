@@ -25,7 +25,7 @@ local rerollStages = {2, 3} -- Insert stages where you want to add a reroll to p
 local hardStages = {} -- Insert stages you want to only have set styles on
 local pFOV; local pSens; local curStyle = "Auto"; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; local pBlock; local pLight;
 local mapName; local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
-local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV = 94.9; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer = false;
+local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer = false;
 local remotecall; local remoteadd; local remotesubscribe; local characterTransparency = 1
 
 -- Camera hooking
@@ -62,6 +62,7 @@ for i,v in pairs(getgc(true)) do
                     pInfo = v
                     pFOV = pInfo.BaseFOV
                     pSens = pInfo.Sensitivity
+                    curFOV = pFOV
                 end
             end
         end
@@ -332,20 +333,6 @@ UIS.InputChanged:Connect(function(input)
             setGain(0.5)
             curStrafeDir = 0
         end
-    elseif curStyle == "Drunk Mode" then
-        if curFOV > 50 and curFOV <= 94.9 and fovCons == 0 then
-            curFOV = curFOV - 0.1
-            setFOV(curFOV)
-        elseif curFOV >= 50 and curFOV < 94.9 and fovCons == 1 then
-            curFOV = curFOV + 0.1
-            setFOV(curFOV)
-        elseif curFOV == 50 and fovCons == 0 then
-            fovCons = 1
-            setFOV(50)
-        elseif curFOV == 94.9 and fovCons == 1 then
-            fovCons = 0
-            setFOV(94.9)
-        end
     else
         -- Do Nothing
     end
@@ -376,6 +363,22 @@ RS.RenderStepped:Connect(function()
             setPlayerVisibility(0)
         elseif not(curStyle == "Third Person") and characterTransparency == 0 then
             setPlayerVisibility(1)
+        end
+            
+        if curStyle == "Drunk Mode" then
+            if curFOV > 50 and curFOV <= pFOV and fovCons == 0 then
+                curFOV = curFOV - 0.1
+                setFOV(curFOV)
+            elseif curFOV >= 50 and curFOV < pFOV and fovCons == 1 then
+                curFOV = curFOV + 0.1
+                setFOV(curFOV)
+            elseif curFOV == 50 and fovCons == 0 then
+                fovCons = 1
+                setFOV(50)
+            elseif curFOV == pFOV and fovCons == 1 then
+                fovCons = 0
+                setFOV(pFOV)
+            end
         end
     else
         -- Nothing
