@@ -1,3 +1,6 @@
+-- Made by Anders and Aidan
+-- Custom Command: /setdefs (For changing the default FOV and Sens for each randomization)
+
 -- Services
 local RS = game:GetService("RunService")
 local UIS = game:GetService("UserInputService")
@@ -18,11 +21,9 @@ local daButton = Instance.new("TextButton"); daButton.BackgroundTransparency = 1
 local daText = Instance.new("TextLabel"); daText.BackgroundTransparency = 1; daText.Parent = daFrame; daText.Font = Enum.Font.SourceSansBold; daText.Text = "- { Current Style : x } -"; daText.TextSize = 26; daText.Position = UDim2.new(0,0,0.25,0); daText.Size = UDim2.new(1,0,0.25,0)
 
 -- Variables
-local pFOV = 94.9
-local pSens = 0.2
 local rerollStages = {2, 3} -- Insert stages where you want to add a reroll to player on
 local hardStages = {} -- Insert stages you want to only have set styles on
-local curStyle = "Auto"; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; local pBlock; local pLight;
+local pFOV; local pSens; local curStyle = "Auto"; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; local pBlock; local pLight;
 local mapName; local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
 local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV = 94.9; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer= false;
 
@@ -43,6 +44,19 @@ for i,v in pairs(getgc(true)) do
         if rawget(v, "keys") and rawget(v, "id") then
             daKeys[v["id"]] = v
         end
+        if rawget(v,'Player') then
+            for u,b in pairs(v) do
+                if u == "CurrentCamera" then
+                    pInfo = v
+                    pFOV = pInfo.BaseFOV
+                    pSens = pInfo.Sensitivity
+                end
+            end
+        end
+        if rawget(v,"Call") and rawget(v,"Add") and rawget(v,"InitLast") and not remotecall then
+			remotecall = v["Call"]
+			remoteadd = v["Add"]
+		end
     end
     if type(v) == 'function' then
         pcall(function()
@@ -60,6 +74,18 @@ for i,v in pairs(getgc(true)) do
         end)
     end
 end
+
+-- Add Commands
+local function addCommand(name,validValues,func)
+	remoteadd(tostring(func),func)
+	remotecall("AddClientCommand",name,validValues,tostring(func))
+end
+
+-- Custom Commands
+addCommand("setdefs", {}, function()
+	pFOV = pInfo.BaseFOV
+    pSens = pInfo.Sensitivity
+end)
 
 -- Establish setGain
 local function setGain(num)
