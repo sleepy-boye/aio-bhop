@@ -169,7 +169,7 @@ local function setPlayerVisibility(num)
     end
 end
 
--- Style odds, but revolutionised
+-- Revolutionized Style Odds [ 18 FUNCTIONAL :: 28 TOTAL ]
 local styleWeights = {
     HSW = 20,
     Auto = 20,
@@ -180,21 +180,25 @@ local styleWeights = {
     ["Foggy Nights"] = 10,
     Faste = 6,
     Slow = 12,
-    ["Timescale 0.5x"] = 20, -- Does not work on main because quat is fucking braindead
-    ["Timescale 1.333x"] = 15, -- Does not work on main because quat is fucking braindead
+    ["Timescale 0.5x"] = 20, -- Timescale removed on main
+    ["Timescale 1.333x"] = 15, -- Timescale removed on main
     ["D-Only"] = 10,
-    ["FOV 60"] = 10, -- Sets FOV to 60 and sets sens accordingly
+    ["FOV 60"] = 10,
     ["Gain with Time"] = 10, -- Gains start at 0.5 below 18 speed, every 0.1 seconds goes up 0.02 until you go back below 18. (10 seconds = 2.5)
     ["Velocity Cap"] = 0, -- Nonfunctional
     ["Right Faste"] = 10, -- LEFT STRAFES: 0.5x Gain, RIGHT STRAFES: 3x Gain
     ["Left Faste"] = 10, -- LEFT STRAFES: 3 Gain, RIGHT STRAFES: 0.5x Gain
-    ["Invisible Blocks"] = 0, -- Only use on maps where there is decals on every block (I will make exception soon)
+    ["Invisible Blocks"] = 0, -- Nonfunctional (Only use on maps where there is decals on every block (I will make exception soon))
     Turbo = 0, --Nonfunctional (Will )
     Flashlight = 0, --Nonfunctional (Will be super dark with a camera shining infront of player)
     ["Landing Light"] = 0, --Nonfunctional
     ["Drunk Mode"] = 0, -- Broken
-    ["Low Gravity"] = 20,
-    ["Third Person"] = 10,
+    ["Low Gravity"] = 20, -- Sets gravity to 0.6
+    ["Third Person"] = 10, -- Third Person 7 blocks out from Player
+    ["Bomber Man"] = 0, -- Nonfunctional
+    ["Atom Eve"] = 0, -- Nonfunctional
+    ["Builderman"] = 0, -- Nonfunctional
+    ["Slowfall"] = 0, -- Nonfunctional
 }
 
 -- Style settings
