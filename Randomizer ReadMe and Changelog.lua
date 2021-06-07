@@ -71,3 +71,10 @@ Version 1.21 :: 07-Jun-21
   
   Styles: A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Pro, Right Faste, Sideways,
   Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Velocity Cap, W-Only
+  
+Version 1.22 :: 07-Jun-21
+  Added Turbo
+  Reworked Map Grabbing and Lighting Changes
+  
+  Styles: A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Pro, Right Faste, Sideways,
+  Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Turbo, Velocity Cap, W-Only
