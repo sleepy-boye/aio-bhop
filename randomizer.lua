@@ -4,6 +4,7 @@
 -- Services
 local RS = game:GetService("RunService")
 local UIS = game:GetService("UserInputService")
+local debris = game:GetService('Debris')
 
 -- Player Info
 local player = game.Players.LocalPlayer; local pName = player.Name; local pC = game.Workspace.Characters:WaitForChild(pName); 
@@ -25,9 +26,9 @@ local daText = Instance.new("TextLabel"); daText.BackgroundTransparency = 1; daT
 local rerollStages = {2, 3} -- Insert stages where you want to add a reroll to player on
 local hardStages = {} -- Insert stages you want to only have set styles on
 local pFOV; local pSens; local curStyle = "Auto"; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; local pBlock; local pLight;
-local mapName; local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
+local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
 local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer = false;
-local remotecall; local remoteadd; local remotesubscribe; local characterTransparency = 1; local movementHook; local sv; local pVelocity; local debris = game:GetService('Debris');
+local remotecall; local remoteadd; local remotesubscribe; local characterTransparency = 1; local movementHook; local sv; local pVelocity;
 local defaultAmbient; local defaultBrightness; local defaultOAmbient; local defaultFogColor; local defaultFogEnd;
 
 -- Camera Hooking and Third Person
@@ -42,27 +43,28 @@ mt.__newindex = newcclosure(function(obj,property,val)
 end)
 setreadonly(mt,true)
 
--- Grab Map Name
-for i,v in pairs(game.Workspace:GetChildren()) do
-    if v:IsA("StringValue") and v.Parent:IsA("Model") then
-        mapName = v.Name
-        print(mapName)
-        wait()
-        defaultAmbient = game.Lighting.Ambient
-        defaultBrightness = game.Lighting.Brightness
-        defaultOAmbient = game.Lighting.OutdoorAmbient
-        defaultFogEnd = game.Lighting.FogEnd
-        defaultFogColor = game.Lighting.FogColor
-        print(defaultFogEnd)
+-- Grab Map --CURRENTLY UNUSED, however may be needed for builderman
+local function map()
+    for _,v in next,workspace:GetChildren() do
+        if v:FindFirstChild("Creator") and v:FindFirstChild("DisplayName") then
+            return v
+        end
     end
+end
+
+-- Set Lighting Defaults
+local function setLightDefaults()
+    local l = game.Lighting
+    defaultAmbient = l.Ambient
+    defaultBrightness = l.Brightness
+    defaultOAmbient = l.OutdoorAmbient
+    defaultFogEnd = l.FogEnd
+    defaultFogColor = l.FogColor
 end
 
 -- getgc Functions and Tables
 for i,v in pairs(getgc(true)) do
     if type(v) == 'table' then
-        if rawget(v, "Call") then
-            call = rawget(v, "Call")
-        end
         if rawget(v, "keys") and rawget(v, "id") then
             daKeys[v["id"]] = v
         end
@@ -126,19 +128,8 @@ end
 
 -- Detect Map Change
 localsubscribe("PartData", function()
-    for i,v in pairs(game.Workspace:GetChildren()) do
-        if v:FindFirstChild("Creator") and v:FindFirstChild("DisplayName") then
-            mapName = v.Name
-            print(mapName)
-            wait()
-            defaultAmbient = game.Lighting.Ambient
-            defaultBrightness = game.Lighting.Brightness
-            defaultOAmbient = game.Lighting.OutdoorAmbient
-            defaultFogEnd = game.Lighting.FogEnd
-            defaultFogColor = game.Lighting.FogColor
-            print(defaultFogEnd)
-        end
-    end
+    wait()
+    setLightDefaults()
 end)
 
 -- Add Commands
@@ -178,13 +169,13 @@ end
 
 -- Establish Timesacle
 local function setTimeScale(num)
-    call('Chatted', '/timescale ' .. num)
+    remotecall('Chatted', '/timescale ' .. num)
 end
 
 -- Estasblish FOV
 local function setFOV(num)
-    call('Chatted', '/fov ' .. num)
-    call('Chatted', '/sens ' .. ((pFOV/num) * pSens))
+    remotecall('Chatted', '/fov ' .. num)
+    remotecall('Chatted', '/sens ' .. ((pFOV/num) * pSens))
 end
 
 -- Establish Lighting
@@ -284,7 +275,7 @@ local styleSettings = {
     ["Drunk Mode"] = {}, -- NF
     ["Low Gravity"] = {grav=.6},
     ["Third Person"] = {},
-    ["Bomber Man"] = {gains=-math.huge}, -- NF
+    ["Bomber Man"] = {}, -- NF
     ["Quake Pro"] = {gains=-math.huge},
     ["Atom Eve"] = {}, -- NF
     ["Builderman"] = {}, -- NF
@@ -312,7 +303,7 @@ local function changeToStyle(style)
     curStyle = style
     local styleInfo = styleSettings[style]
     local keyTable = styleInfo["keys"] or {1,1,1,1}
-    call('Chatted','Rolled '..style..'!')
+    remotecall('Chatted','Rolled '..style..'!')
     setKeys(keyTable[1],keyTable[2],keyTable[3],keyTable[4])
     setGain(styleInfo["gains"] or 1)
     setLightMode(styleInfo["light"] or 1)
@@ -358,7 +349,6 @@ local function rayFunction()
                         rerollCount = rerollCount + 1
                     end
                 end
-
                 curStage = tonumber(hit.Name:sub(6,8))
                 print("------------------")
                 print("Reached Stage " .. curStage)
@@ -409,7 +399,7 @@ mouse.Button1Down:Connect(function()
     end
     local hitFeedback = Instance.new("Part",workspace.Characters)
     hitFeedback.Anchored = true
-    hitFeedback.Name = "QuakePro Hit Feedback"
+    hitFeedback.Name = "QuakeMan Hit Feedback"
     hitFeedback.Size = Vector3.new(.35,.35,.35)
     hitFeedback.Position = mouse.Hit.p
     hitFeedback.Transparency = .2
@@ -426,19 +416,11 @@ mouse.Button1Down:Connect(function()
     setupvalue(sv,1,getupvalue(sv,1)+launchDistanceVector)
 end)
 
+setLightDefaults()
 -- Main Function
 RS.RenderStepped:Connect(function()
     daText.Text = "- { Current Style : " .. curStyle .. " } -"
     daButton.Text = "-- { Reroll : " .. rerollCount .. " Left } --"
-
-    if not game.Workspace[mapName] then
-        for i,v in pairs(game.Workspace:GetDescendants()) do
-            if v:IsA("StringValue") and v.Parent:IsA("Model") then
-                mapName = v.Parent.Name
-                print(mapName)
-            end
-        end
-    end
 
     if isRunning == true then
         rayFunction()
