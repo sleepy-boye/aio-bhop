@@ -17,10 +17,15 @@ local function getspeedgui() for i,v in pairs(allguis) do if v.ClassName == "Tex
 --local function getspecgui() for i,v in pairs(allguis) do if v.ClassName == "TextLabel" and string.find(v.Text,"Change View") then return(v) end end end repeat allguis = game.Players.LocalPlayer.PlayerGui:GetDescendants() wait(0.1) specgui = getspecgui() until specgui
 
 -- StyleGui
-local newGui = Instance.new("ScreenGui"); newGui.Parent = player.PlayerGui
-local daFrame = Instance.new("Frame"); daFrame.BackgroundTransparency = 1; daFrame.Parent = newGui; daFrame.Position = UDim2.new(0,0,0.2,0); daFrame.Size = UDim2.new(0.2,0,0.3,0)
-local daButton = Instance.new("TextButton"); daButton.BackgroundTransparency = 1; daButton.Parent = daFrame; daButton.Font = Enum.Font.SourceSansBold; daButton.Text = "-- { Reroll : 3 Left } --"; daButton.TextSize = 26; daButton.Position = UDim2.new(0.25,0,0.5,0); daButton.Size = UDim2.new(0.5,0,0.25,0)
-local daText = Instance.new("TextLabel"); daText.BackgroundTransparency = 1; daText.Parent = daFrame; daText.Font = Enum.Font.SourceSansBold; daText.Text = "- { Current Style : x } -"; daText.TextSize = 26; daText.Position = UDim2.new(0,0,0.25,0); daText.Size = UDim2.new(1,0,0.25,0)
+local newGui = Instance.new("ScreenGui", player.PlayerGui);
+local daFrame = Instance.new("Frame", newGui); daFrame.BackgroundTransparency = 1; daFrame.Parent = newGui; daFrame.Position = UDim2.new(0,0,0.2,0); daFrame.Size = UDim2.new(0.2,0,0.3,0)
+local daButton = Instance.new("TextButton", daFrame); daButton.BackgroundTransparency = 1; daButton.Font = Enum.Font.SourceSansBold; daButton.Text = "-- { Reroll : 3 Left } --"; daButton.TextSize = 26; daButton.Position = UDim2.new(0.25,0,0.5,0); daButton.Size = UDim2.new(0.5,0,0.25,0)
+local daText = Instance.new("TextLabel", daFrame); daText.BackgroundTransparency = 1; daText.Font = Enum.Font.SourceSansBold; daText.Text = "- { Current Style : x } -"; daText.TextSize = 26; daText.Position = UDim2.new(0,0,0.25,0); daText.Size = UDim2.new(1,0,0.25,0)
+
+-- TurboGui
+local turboGui = Instance.new("ScreenGui", player.PlayerGui); turboGui.Enabled = false
+local turboFrame = Instance.new("Frame", turboGui); turboFrame.BackgroundTransparency = 1; turboFrame.Position = UDim2.new(0.0065,0,0.8,0); turboFrame.Size = UDim2.new(0.1,0,0.05,0)
+local turboLabel = Instance.new("TextLabel", turboFrame); turboLabel.Font = Enum.Font.SourceSansBold; turboLabel.Text = "Turbo Ready!"; turboLabel.BackgroundColor3 = Color3.fromRGB(0, 255, 21); turboLabel.TextSize = 20; turboLabel.Position = UDim2.new(0,0,0,0); turboLabel.Size = UDim2.new(1,0,1,0);
 
 -- Variables
 local rerollStages = {2, 3} -- Insert stages where you want to add a reroll to player on
@@ -232,7 +237,7 @@ local styleWeights = {
     ["Right Faste"] = 5, -- L: 0.5x, R: 3x
     ["Left Faste"] = 5, -- L: 3x, R: 0.5x
     ["Invisible Blocks"] = 0, -- NF
-    Turbo = 5,  -- NF
+    Turbo = 5000,  -- NF
     Flashlight = 0,  -- NF
     ["Landing Light"] = 0,  -- NF
     ["Drunk Mode"] = 0, -- NF
@@ -387,11 +392,12 @@ end)
 -- InputBegan for Turbo
 UIS.InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.F and timeGainBuffer == false and curStyle == "Turbo" then
-        setGain(2)
         timeGainBuffer = true
+        turboLabel.Text = "Turbo in Use!"; turboLabel.BackgroundColor3 = Color3.fromRGB(255, 153, 0);
+        setGain(2); wait(1); setGain(3); wait(1); setGain(4); wait(0.5); setGain(2); wait(0.5); setGain(0.25)
+        turboLabel.Text = "Turbo on Cooldown"; turboLabel.BackgroundColor3 = Color3.fromRGB(255, 0, 0);
         wait(3)
-        setGain(0.25)
-        wait(3)
+        turboLabel.Text = "Turbo Ready!"; turboLabel.BackgroundColor3 = Color3.fromRGB(0, 255, 21);
         timeGainBuffer = false
     end
 end)
@@ -421,6 +427,7 @@ mouse.Button1Down:Connect(function()
 end)
 
 setLightDefaults()
+
 -- Main Function
 RS.RenderStepped:Connect(function()
     daText.Text = "- { Current Style : " .. curStyle .. " } -"
@@ -445,6 +452,10 @@ RS.RenderStepped:Connect(function()
                 timeGain = 0.5
                 timeGainBuffer = false
             end
+        end
+
+        if curStyle == "Turbo" then
+            turboGui.Enabled = true
         end
 
         if curStyle == "Velocity Cap" then
