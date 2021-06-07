@@ -399,7 +399,7 @@ mouse.Button1Down:Connect(function()
     end
     local hitFeedback = Instance.new("Part",workspace.Characters)
     hitFeedback.Anchored = true
-    hitFeedback.Name = "QuakeMan Hit Feedback"
+    hitFeedback.Name = "QuakePro Hit Feedback"
     hitFeedback.Size = Vector3.new(.35,.35,.35)
     hitFeedback.Position = mouse.Hit.p
     hitFeedback.Transparency = .2
