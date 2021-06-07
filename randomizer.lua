@@ -223,35 +223,35 @@ end
 
 -- Revolutionized Style Odds [ 20 FUNCTIONAL :: 30 TOTAL ]
 local styleWeights = {
-    HSW = 20,
-    Auto = 20,
-    Backwards = 2,
-    ["A-Only"] = 15,
+    HSW = 10,
+    Auto = 10,
+    Backwards = 1,
+    ["A-Only"] = 7,
     ["W-Only"] = 2,
-    Sideways = 5,
-    ["Foggy Nights"] = 100,
-    Faste = 6,
-    Slow = 12,
-    ["Timescale 0.5x"] = 15, -- Timescale removed on main
-    ["Timescale 1.333x"] = 10, -- Timescale removed on main
-    ["D-Only"] = 10,
-    ["FOV 60"] = 10,
-    ["Gain with Time"] = 10, -- 0.5x & every 0.1 sec increases 0.02 until speed < 18
-    ["Velocity Cap"] = 15, -- 40 Cap
-    ["Right Faste"] = 10, -- L: 0.5x, R: 3x
-    ["Left Faste"] = 10, -- L: 3x, R: 0.5x
+    Sideways = 3,
+    ["Foggy Nights"] = 6,
+    Faste = 5,
+    Slow = 6,
+    ["Timescale 0.5x"] = 6, -- Timescale removed on main
+    ["Timescale 1.333x"] = 4, -- Timescale removed on main
+    ["D-Only"] = 4,
+    ["FOV 60"] = 4,
+    ["Gain with Time"] = 5, -- 0.5x & every 0.1 sec increases 0.02 until speed < 18
+    ["Velocity Cap"] = 7, -- 40 Cap
+    ["Right Faste"] = 5, -- L: 0.5x, R: 3x
+    ["Left Faste"] = 5, -- L: 3x, R: 0.5x
     ["Invisible Blocks"] = 0, -- NF
     Turbo = 0,  -- NF
     Flashlight = 0,  -- NF
     ["Landing Light"] = 0,  -- NF
     ["Drunk Mode"] = 0, -- NF
-    ["Low Gravity"] = 20,
-    ["Third Person"] = 10,
-    ["Bomber Man"] = 2000,
+    ["Low Gravity"] = 6,
+    ["Third Person"] = 6,
+    ["Bomber Man"] = 4,
     ["Quake Man"] = 0, -- NF
     ["Atom Eve"] = 0,  -- NF
     ["Builderman"] = 0,  -- NF
-    ["Slowfall"] = 15,
+    ["Slowfall"] = 4,
     ["Double Jump"] = 0, -- NF
 }
 
