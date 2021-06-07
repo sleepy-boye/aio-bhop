@@ -27,8 +27,9 @@
     local mapName; local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
     local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer = false;
     local remotecall; local remoteadd; local remotesubscribe; local characterTransparency = 1; local movementHook; local sv; local pVelocity
+    local defaultAmbient; local defaultBrightness; local defaultOAmbient; local defaultFogColor; local defaultFogEnd;
 
-    -- Camera hooking
+    -- Camera Hooking and Third Person
     local mt = getrawmetatable(game)
     local old__newindex = mt.__newindex
     setreadonly(mt,false)
@@ -41,9 +42,17 @@
     setreadonly(mt,true)
 
     -- Grab Map Name
-    for i,v in pairs(game.Workspace:GetDescendants()) do
+    for i,v in pairs(game.Workspace:GetChildren()) do
         if v:IsA("StringValue") and v.Parent:IsA("Model") then
-            mapName = v.Parent.Name
+            mapName = v.Name
+            print(mapName)
+            wait()
+            defaultAmbient = game.Lighting.Ambient
+            defaultBrightness = game.Lighting.Brightness
+            defaultOAmbient = game.Lighting.OutdoorAmbient
+            defaultFogEnd = game.Lighting.FogEnd
+            defaultFogColor = game.Lighting.FogColor
+            print(defaultFogEnd)
         end
     end
 
@@ -71,6 +80,11 @@
                 remoteadd = v["Add"]
                 remotesubscribe = v["Subscribe"]
             end
+            if rawget(v,"Call") and rawget(v,"Add") and not rawget(v,"InitLast") and not localcall then
+                localcall = v["Call"]
+                localsubscribe = v["Subscribe"]
+                localadd = v["Add"]
+            end
             if rawget(v,"GetAngles") and rawget(v,"GetVelocity") then
                 movementHook = v
             end
@@ -91,6 +105,8 @@
             end)
         end
     end
+
+    -- Grab Velocity
     pVelocity = movementHook.GetVelocity(player)
     for _,f in pairs(getgc()) do
         if type(f) == "function" then
@@ -106,6 +122,24 @@
             end)
         end
     end
+
+    -- Detect Map Change
+    localsubscribe("PartData", function()
+        for i,v in pairs(game.Workspace:GetChildren()) do
+            if v:FindFirstChild("Creator") and v:FindFirstChild("DisplayName") then
+                mapName = v.Name
+                print(mapName)
+                wait()
+                defaultAmbient = game.Lighting.Ambient
+                defaultBrightness = game.Lighting.Brightness
+                defaultOAmbient = game.Lighting.OutdoorAmbient
+                defaultFogEnd = game.Lighting.FogEnd
+                defaultFogColor = game.Lighting.FogColor
+                print(defaultFogEnd)
+            end
+        end
+    end)
+
     -- Add Commands
     local function addCommand(name,validValues,func)
         remoteadd(tostring(func),func)
@@ -155,11 +189,11 @@
     -- Establish Lighting
     local function setLightMode(num)
         if num == 1 then -- Natural Light
-            game.Lighting.Ambient = Color3.fromRGB(0,0,0)
-            game.Lighting.Brightness = 1
-            game.Lighting.FogColor = Color3.new(0,0,0)
-            game.Lighting.FogEnd = 5000
-            game.Lighting.OutdoorAmbient = Color3.fromRGB(173,173,173)
+            game.Lighting.Ambient = defaultAmbient
+            game.Lighting.Brightness = defaultBrightness
+            game.Lighting.FogColor = defaultFogColor
+            game.Lighting.FogEnd = defaultFogEnd
+            game.Lighting.OutdoorAmbient = defaultOAmbient
         elseif num == 2 then -- Foggy Nights Mode
             game.Lighting.Ambient = Color3.fromRGB(0,0,0)
             game.Lighting.Brightness = 1
@@ -186,7 +220,7 @@
         end
     end
 
-    -- Revolutionized Style Odds [ 20 FUNCTIONAL :: 28 TOTAL ]
+    -- Revolutionized Style Odds [ 20 FUNCTIONAL :: 29 TOTAL ]
     local styleWeights = {
         HSW = 20,
         Auto = 20,
@@ -194,11 +228,11 @@
         ["A-Only"] = 15,
         ["W-Only"] = 2,
         Sideways = 5,
-        ["Foggy Nights"] = 10,
+        ["Foggy Nights"] = 100,
         Faste = 6,
         Slow = 12,
-        ["Timescale 0.5x"] = 20, -- Timescale removed on main
-        ["Timescale 1.333x"] = 15, -- Timescale removed on main
+        ["Timescale 0.5x"] = 15, -- Timescale removed on main
+        ["Timescale 1.333x"] = 10, -- Timescale removed on main
         ["D-Only"] = 10,
         ["FOV 60"] = 10,
         ["Gain with Time"] = 10, -- 0.5x & every 0.1 sec increases 0.02 until speed < 18
@@ -216,6 +250,7 @@
         ["Atom Eve"] = 0,  -- NF
         ["Builderman"] = 0,  -- NF
         ["Slowfall"] = 15,
+        ["Double Jump"] = 0, -- NF
     }
 
     -- Style settings
@@ -367,6 +402,16 @@
     RS.RenderStepped:Connect(function()
         daText.Text = "- { Current Style : " .. curStyle .. " } -"
         daButton.Text = "-- { Reroll : " .. rerollCount .. " Left } --"
+
+        if not game.Workspace[mapName] then
+            for i,v in pairs(game.Workspace:GetDescendants()) do
+                if v:IsA("StringValue") and v.Parent:IsA("Model") then
+                    mapName = v.Parent.Name
+                    print(mapName)
+                end
+            end
+        end
+
         if isRunning == true then
             rayFunction()
             local currentVel = getupvalue(sv,1)
