@@ -217,7 +217,7 @@ local function setPlayerVisibility(num)
     end
 end
 
--- Revolutionized Style Odds
+-- Revolutionized Style Odds [ 20 FUNCTIONAL :: 30 TOTAL ]
 local styleWeights = {
     HSW = 10,
     Auto = 10,
@@ -237,7 +237,7 @@ local styleWeights = {
     ["Right Faste"] = 5, -- L: 0.5x, R: 3x
     ["Left Faste"] = 5, -- L: 3x, R: 0.5x
     ["Invisible Blocks"] = 0, -- NF
-    Turbo = 5,
+    Turbo = 5000,  -- NF
     Flashlight = 0,  -- NF
     ["Landing Light"] = 0,  -- NF
     ["Drunk Mode"] = 0, -- NF
@@ -274,7 +274,7 @@ local styleSettings = {
     ["Right Faste"] = {},
     ["Left Faste"] = {},
     ["Invisible Blocks"] = {},  -- NF
-    Turbo = {gains=0.25},
+    Turbo = {gains=0.25},  -- NF
     Flashlight = {},  -- NF
     ["Landing Light"] = {}, -- NF
     ["Drunk Mode"] = {}, -- NF
@@ -396,7 +396,7 @@ UIS.InputBegan:Connect(function(input)
         turboLabel.Text = "Turbo in Use!"; turboLabel.BackgroundColor3 = Color3.fromRGB(255, 153, 0);
         setGain(2); wait(1); setGain(3); wait(1); setGain(4); wait(0.5); setGain(2); wait(0.5); setGain(0.25)
         turboLabel.Text = "Turbo on Cooldown"; turboLabel.BackgroundColor3 = Color3.fromRGB(255, 0, 0);
-        wait(3)
+        wait(5)
         turboLabel.Text = "Turbo Ready!"; turboLabel.BackgroundColor3 = Color3.fromRGB(0, 255, 21);
         timeGainBuffer = false
     end
@@ -456,6 +456,8 @@ RS.RenderStepped:Connect(function()
 
         if curStyle == "Turbo" then
             turboGui.Enabled = true
+        else
+            turboGui.Enabled = false
         end
 
         if curStyle == "Velocity Cap" then
