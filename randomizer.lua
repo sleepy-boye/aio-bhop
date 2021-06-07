@@ -217,7 +217,7 @@ local function setPlayerVisibility(num)
     end
 end
 
--- Revolutionized Style Odds [ 20 FUNCTIONAL :: 30 TOTAL ]
+-- Revolutionized Style Odds
 local styleWeights = {
     HSW = 10,
     Auto = 10,
@@ -237,7 +237,7 @@ local styleWeights = {
     ["Right Faste"] = 5, -- L: 0.5x, R: 3x
     ["Left Faste"] = 5, -- L: 3x, R: 0.5x
     ["Invisible Blocks"] = 0, -- NF
-    Turbo = 5000,  -- NF
+    Turbo = 5,
     Flashlight = 0,  -- NF
     ["Landing Light"] = 0,  -- NF
     ["Drunk Mode"] = 0, -- NF
@@ -274,7 +274,7 @@ local styleSettings = {
     ["Right Faste"] = {},
     ["Left Faste"] = {},
     ["Invisible Blocks"] = {},  -- NF
-    Turbo = {gains=0.25},  -- NF
+    Turbo = {gains=0.25},
     Flashlight = {},  -- NF
     ["Landing Light"] = {}, -- NF
     ["Drunk Mode"] = {}, -- NF
