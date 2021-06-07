@@ -18,7 +18,7 @@ local function getspeedgui() for i,v in pairs(allguis) do if v.ClassName == "Tex
 
 -- StyleGui
 local newGui = Instance.new("ScreenGui"); newGui.Parent = player.PlayerGui
-local daFrame = Instance.new("Frame"); daFrame .BackgroundTransparency = 1; daFrame.Parent = newGui; daFrame.Position = UDim2.new(0,0,0.2,0); daFrame.Size = UDim2.new(0.2,0,0.3,0)
+local daFrame = Instance.new("Frame"); daFrame.BackgroundTransparency = 1; daFrame.Parent = newGui; daFrame.Position = UDim2.new(0,0,0.2,0); daFrame.Size = UDim2.new(0.2,0,0.3,0)
 local daButton = Instance.new("TextButton"); daButton.BackgroundTransparency = 1; daButton.Parent = daFrame; daButton.Font = Enum.Font.SourceSansBold; daButton.Text = "-- { Reroll : 3 Left } --"; daButton.TextSize = 26; daButton.Position = UDim2.new(0.25,0,0.5,0); daButton.Size = UDim2.new(0.5,0,0.25,0)
 local daText = Instance.new("TextLabel"); daText.BackgroundTransparency = 1; daText.Parent = daFrame; daText.Font = Enum.Font.SourceSansBold; daText.Text = "- { Current Style : x } -"; daText.TextSize = 26; daText.Position = UDim2.new(0,0,0.25,0); daText.Size = UDim2.new(1,0,0.25,0)
 
