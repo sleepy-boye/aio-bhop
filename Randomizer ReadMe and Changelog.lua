@@ -59,13 +59,14 @@ Version 1.12 :: 31-May-21
   Styles: A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Right Faste, Sideways,
   Slow, Third Person, Timescale 0.5, Timescale 1.33, W-Only
 
-Version 1.13 :: 03-Jun-21
+Version 1.2 :: 03-Jun-21
+  -- {{ 20 STYLES REACHED } --
   Added Slowfall and Velocity Cap
   
   Styles: A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Right Faste, Sideways,
   Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Velocity Cap, W-Only
 
-Version 1.14 :: 07-Jun-21
+Version 1.21 :: 07-Jun-21
   Added Quake Man
   
   Styles: A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Man, Right Faste, Sideways,
