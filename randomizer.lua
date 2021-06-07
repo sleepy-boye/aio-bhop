@@ -232,7 +232,7 @@ local styleWeights = {
     ["Right Faste"] = 5, -- L: 0.5x, R: 3x
     ["Left Faste"] = 5, -- L: 3x, R: 0.5x
     ["Invisible Blocks"] = 0, -- NF
-    Turbo = 0,  -- NF
+    Turbo = 5000,  -- NF
     Flashlight = 0,  -- NF
     ["Landing Light"] = 0,  -- NF
     ["Drunk Mode"] = 0, -- NF
@@ -269,7 +269,7 @@ local styleSettings = {
     ["Right Faste"] = {},
     ["Left Faste"] = {},
     ["Invisible Blocks"] = {},  -- NF
-    Turbo = {},  -- NF
+    Turbo = {gains=0.25},  -- NF
     Flashlight = {},  -- NF
     ["Landing Light"] = {}, -- NF
     ["Drunk Mode"] = {}, -- NF
@@ -364,31 +364,35 @@ local function rayFunction()
     end
 end
 
--- Style Bender
+-- InputChanged for Left and Right Faste
 UIS.InputChanged:Connect(function(input)
     local delta = input.Delta
-    if curStyle == "Left Faste" then
-        if UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X > 0 and curStrafeDir == 1 and curStyle == "Left Faste" then
-            print("Strafing right")
-            setGain(0.5)
-            curStrafeDir = 0
-        elseif UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X < 0 and curStrafeDir == 0 and curStyle == "Left Faste" then
-            print("Strafing left")
-            setGain(3)
-            curStrafeDir = 1
-        end
-    elseif curStyle == "Right Faste" then
-        if UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X > 0 and curStrafeDir == 0 and curStyle == "Right Faste" then
-            print("Strafing right")
-            setGain(3)
-            curStrafeDir = 1
-        elseif UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X < 0 and curStrafeDir == 1 and curStyle == "Right Faste" then
-            print("Strafing left")
-            setGain(0.5)
-            curStrafeDir = 0
-        end
+    if UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X > 0 and curStrafeDir == 1 and curStyle == "Left Faste" then
+        setGain(0.5)
+        curStrafeDir = 0
+    elseif UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X < 0 and curStrafeDir == 0 and curStyle == "Left Faste" then
+        setGain(3)
+        curStrafeDir = 1
+    elseif UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X > 0 and curStrafeDir == 0 and curStyle == "Right Faste" then
+        setGain(3)
+        curStrafeDir = 1
+    elseif UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X < 0 and curStrafeDir == 1 and curStyle == "Right Faste" then
+        setGain(0.5)
+        curStrafeDir = 0
     else
         -- Do Nothing
+    end
+end)
+
+-- InputBegan for Turbo
+UIS.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.F and timeGainBuffer == false and curStyle == "Turbo" then
+        setGain(2)
+        timeGainBuffer = true
+        wait(3)
+        setGain(0.25)
+        wait(3)
+        timeGainBuffer = false
     end
 end)
 
