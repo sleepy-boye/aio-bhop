@@ -16,7 +16,7 @@ Current Styles:
       Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Velocity Cap, W-Only
 
   Non-Functional Styles:
-      Atom Eve, Bomber Man, Builderman, Double Jump, Drunk Mode, Flashlight, Invisible Blocks, Landing Light, Turbo,
+      Atom Eve, Bomber Man, Builderman, Double Jump, Drunk Mode, Flashlight, Invisible Blocks, Landing Light, Turbo
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     ------------------------------------------------ { Randomizer : Changelog } --------------------------------------------------                    
