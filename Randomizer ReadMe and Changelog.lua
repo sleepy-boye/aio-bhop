@@ -12,7 +12,7 @@ Current Commands:
 Current Styles:
   -- { Functional - 21 :: Total - 30 } --
   Styles: 
-      A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Man, Right Faste, Sideways,
+      A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Pro, Right Faste, Sideways,
       Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Velocity Cap, W-Only
 
   Non-Functional Styles:
@@ -67,7 +67,7 @@ Version 1.2 :: 03-Jun-21
   Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Velocity Cap, W-Only
 
 Version 1.21 :: 07-Jun-21
-  Added Quake Man
+  Added Quake Pro
   
-  Styles: A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Man, Right Faste, Sideways,
+  Styles: A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Pro, Right Faste, Sideways,
   Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Velocity Cap, W-Only
