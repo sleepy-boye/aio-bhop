@@ -248,7 +248,7 @@ local styleWeights = {
     ["Low Gravity"] = 6,
     ["Third Person"] = 6,
     ["Bomber Man"] = 0, -- NF
-    ["Quake Man"] = 4,
+    ["Quake Pro"] = 4,
     ["Atom Eve"] = 0,  -- NF
     ["Builderman"] = 0,  -- NF
     ["Slowfall"] = 4,
@@ -285,7 +285,7 @@ local styleSettings = {
     ["Low Gravity"] = {grav=.6},
     ["Third Person"] = {},
     ["Bomber Man"] = {gains=-math.huge}, -- NF
-    ["Quake Man"] = {gains=-math.huge},
+    ["Quake Pro"] = {gains=-math.huge},
     ["Atom Eve"] = {}, -- NF
     ["Builderman"] = {}, -- NF
     ["Slowfall"] = {},
@@ -404,12 +404,12 @@ end)
 
 -- Bomb Style Logic
 mouse.Button1Down:Connect(function()
-    if curStyle ~= "Quake Man" then
+    if curStyle ~= "Quake Pro" then
         return
     end
     local hitFeedback = Instance.new("Part",workspace.Characters)
     hitFeedback.Anchored = true
-    hitFeedback.Name = "QuakeMan Hit Feedback"
+    hitFeedback.Name = "QuakePro Hit Feedback"
     hitFeedback.Size = Vector3.new(.35,.35,.35)
     hitFeedback.Position = mouse.Hit.p
     hitFeedback.Transparency = .2
