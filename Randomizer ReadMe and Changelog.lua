@@ -10,13 +10,13 @@ Current Commands:
   /setdefs -- Allows you to change the default fov and sensitivity the script uses when changing your styles.
 
 Current Styles:
-  -- { Functional - 21 :: Total - 30 } --
+  -- { Functional - 22 :: Total - 30 } --
   Styles: 
       A-Only, Auto, Backwards, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Pro, Right Faste, Sideways,
-      Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Velocity Cap, W-Only
+      Slow, Slowfall, Third Person, Timescale 0.5, Timescale 1.33, Turbo, Velocity Cap, W-Only
 
   Non-Functional Styles:
-      Atom Eve, Bomber Man, Builderman, Double Jump, Drunk Mode, Flashlight, Invisible Blocks, Landing Light, Turbo
+      Atom Eve, Bomber Man, Builderman, Double Jump, Drunk Mode, Flashlight, Invisible Blocks, Landing Light
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     ----------------------------------- { Randomizer : Changelog } --------------------------------------------------                    
