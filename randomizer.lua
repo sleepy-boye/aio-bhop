@@ -31,10 +31,10 @@ local turboLabel = Instance.new("TextLabel", turboFrame); turboLabel.Font = Enum
 local rerollStages = {2, 3} -- Insert stages where you want to add a reroll to player on
 local hardStages = {} -- Insert stages you want to only have set styles on
 local pFOV; local pSens; local curStyle = "Auto"; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; local pBlock; local pLight;
-local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
+local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}; local movement2;
 local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer = false;
 local remotecall; local remoteadd; local remotesubscribe; local characterTransparency = 1; local movementHook; local sv; local pVelocity; local checkpointCheck
-local defaultAmbient; local defaultBrightness; local defaultOAmbient; local defaultFogColor; local defaultFogEnd;
+local defaultAmbient; local defaultBrightness; local defaultOAmbient; local defaultFogColor; local defaultFogEnd; local randomNum; local curShifted = 0;
 
 -- Camera Hooking and Third Person
 local mt = getrawmetatable(game)
@@ -102,6 +102,9 @@ for i,v in pairs(getgc(true)) do
         end
         if rawget(v,"GetAngles") and rawget(v,"GetVelocity") then
             movementHook = v
+        end
+        if rawget(v,"GetGravity") and rawget(v,"UpdatePart") then
+            movement2 = v
         end
         if rawget(v,"PlayJump") then
             playJump = v.PlayJump
@@ -228,6 +231,13 @@ local function setPlayerVisibility(num)
     end
 end
 
+-- Random Size Generator (For Atom Eve)
+local function randomSize()
+	randomNum = math.random(5,25)
+	randomNum = randomNum/10
+	return randomNum
+end
+
 -- Revolutionized Style Odds
 local styleWeights = {
     HSW = 10,
@@ -256,7 +266,7 @@ local styleWeights = {
     ["Third Person"] = 6,
     ["Bomber Man"] = 0, -- NF
     ["Quake Pro"] = 4,
-    ["Atom Eve"] = 0,  -- NF
+    ["Atom Eve"] = 500,
     ["Builderman"] = 0,  -- NF
     ["Slowfall"] = 4,
     ["Double Jump"] = 0, -- NF
@@ -293,7 +303,7 @@ local styleSettings = {
     ["Third Person"] = {},
     ["Bomber Man"] = {}, -- NF
     ["Quake Pro"] = {gains=-math.huge},
-    ["Atom Eve"] = {}, -- NF
+    ["Atom Eve"] = {},
     ["Builderman"] = {}, -- NF
     ["Slowfall"] = {},
     ["Double Jump"] = {}, -- NF
@@ -354,21 +364,28 @@ end)
 
 -- Checkpoint Check
 function checkpointCheck(part)
-    if string.find(part.Name, "Spawn") then
-        if curStage < tonumber(part.Name:sub(6,-1)) then
-            for i,v in pairs(rerollStages) do
-                if tonumber(part.Name:sub(6,-1)) == v then
+    local spawnNumber
+    if string.find(part.Name,"SpawnAt") then
+        spawnNumber = tonumber(part.Name:sub(8,-1))
+    elseif string.find(part.Name,"Spawn") then
+        spawnNumber = tonumber(part.Name:sub(6,-1))
+    end
+    print(spawnNumber)
+    if spawnNumber then
+        if curStage < spawnNumber then
+            for _,v in pairs(rerollStages) do
+                if spawnNumber == v then
                     rerollCount = rerollCount + 1
                 end
             end
-            curStage = tonumber(part.Name:sub(6,-1))
+            curStage = spawnNumber
             print("------------------")
             print("Reached Stage " .. curStage)
             print("------------------")
             rerolledThisStage = false
             randomizeStyle(true)
         else
-            --print("Already passed stage " .. tonumber(part.Name:sub(6,-1)))
+            --print("Already passed stage " .. spawnNumber)
         end
     end
 end
@@ -402,7 +419,7 @@ UIS.InputChanged:Connect(function(input)
     end
 end)
 
--- InputBegan for Turbo
+-- InputBegan for Atom Eve and Turbo
 UIS.InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.F and timeGainBuffer == false and curStyle == "Turbo" then
         timeGainBuffer = true
@@ -412,6 +429,20 @@ UIS.InputBegan:Connect(function(input)
         wait(5)
         turboLabel.Text = "Turbo Ready!"; turboLabel.BackgroundColor3 = Color3.fromRGB(0, 255, 21);
         timeGainBuffer = false
+    elseif input.KeyCode == Enum.KeyCode.F and curStyle == "Atom Eve" then
+        local musTarget = mouse.Target
+        if musTarget and musTarget.Name == "Platform" or musTarget.Name == "Surf" and curShifted < 3 then
+            local bX = musTarget.Size.X; local bY = musTarget.Size.Y; local bZ = musTarget.Size.Z; local bName = musTarget.Name
+            curShifted = curShifted + 1
+			print("Currently shifted blocks: " .. curShifted)
+            movement2.UpdatePart(musTarget,{Size=Vector3.new(bX * randomSize(), bY * randomSize(), bZ * randomSize())})
+            movement2.UpdatePart(musTarget,{Name="Shifted"})
+			wait(3)
+			curShifted = curShifted - 1
+			print("Shifted block reverted to normal")
+			movement2.UpdatePart(musTarget,{Size=Vector3.new(bX, bY, bZ)})
+            movement2.UpdatePart(musTarget,{Name=bName})
+        end
     end
 end)
 
