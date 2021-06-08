@@ -308,7 +308,7 @@ local styleWeights = {
     ["Bomber Man"] = 0, -- NF
     ["Quake Pro"] = 4,
     ["Atom Eve"] = 5,
-    ["Builderman"] = 5000,  -- NF
+    ["Builderman"] = 5,
     ["Slowfall"] = 4,
     ["Double Jump"] = 0, -- NF
 }
@@ -345,7 +345,7 @@ local styleSettings = {
     ["Bomber Man"] = {}, -- NF
     ["Quake Pro"] = {gains=-math.huge},
     ["Atom Eve"] = {},
-    ["Builderman"] = {}, -- NF
+    ["Builderman"] = {},
     ["Slowfall"] = {},
     ["Double Jump"] = {}, -- NF
 }
