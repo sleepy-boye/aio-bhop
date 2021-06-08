@@ -90,7 +90,7 @@ Version 1.22 :: 07-Jun-21
 
 Version 1.23 :: 08-Jun-21
   Added Atom Eve and Builderman
-  Rework of Raycasting (Changed to Jump Function)
+  Replaced Raycasting with Jump Function
     
   Styles: 
       A-Only, Auto, Atom Eve, Backwards, Builderman, D-Only, Faste, Foggy Nights, FOV 60, Gain with Time, Half-Sideways, Left Faste, Low Gravity, Quake Pro,
