@@ -233,7 +233,7 @@ end
 
 -- Random Size Generator (For Atom Eve)
 local function randomSize()
-	randomNum = math.random(5,25)
+	randomNum = math.random(5,22)
 	randomNum = randomNum/10
 	return randomNum
 end
@@ -243,30 +243,30 @@ local styleWeights = {
     HSW = 10,
     Auto = 10,
     Backwards = 1,
-    ["A-Only"] = 7,
+    ["A-Only"] = 5,
     ["W-Only"] = 2,
     Sideways = 3,
-    ["Foggy Nights"] = 6,
+    ["Foggy Nights"] = 5,
     Faste = 5,
     Slow = 6,
-    ["Timescale 0.5x"] = 6, -- Timescale removed on main
+    ["Timescale 0.5x"] = 5, -- Timescale removed on main
     ["Timescale 1.333x"] = 4, -- Timescale removed on main
     ["D-Only"] = 4,
     ["FOV 60"] = 4,
     ["Gain with Time"] = 5, -- 0.5x & every 0.1 sec increases 0.02 until speed < 18
-    ["Velocity Cap"] = 7, -- 40 Cap
-    ["Right Faste"] = 5, -- L: 0.5x, R: 3x
-    ["Left Faste"] = 5, -- L: 3x, R: 0.5x
+    ["Velocity Cap"] = 5, -- 40 Cap
+    ["Right Faste"] = 4, -- L: 0.5x, R: 3x
+    ["Left Faste"] = 4, -- L: 3x, R: 0.5x
     ["Invisible Blocks"] = 0, -- NF
-    Turbo = 5,
+    Turbo = 4,
     Flashlight = 0,  -- NF
     ["Landing Light"] = 0,  -- NF
     ["Drunk Mode"] = 0, -- NF
-    ["Low Gravity"] = 6,
-    ["Third Person"] = 6,
+    ["Low Gravity"] = 5,
+    ["Third Person"] = 5,
     ["Bomber Man"] = 0, -- NF
     ["Quake Pro"] = 4,
-    ["Atom Eve"] = 500,
+    ["Atom Eve"] = 5,
     ["Builderman"] = 0,  -- NF
     ["Slowfall"] = 4,
     ["Double Jump"] = 0, -- NF
