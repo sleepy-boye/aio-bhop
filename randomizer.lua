@@ -447,7 +447,7 @@ RS.RenderStepped:Connect(function()
     daButton.Text = "-- { Reroll : " .. rerollCount .. " Left } --"
 
     if isRunning then
-        rayFunction()
+        --rayFunction()
         local currentVel = getupvalue(sv,1)
         local velX = currentVel.X
         local velY = currentVel.Y
