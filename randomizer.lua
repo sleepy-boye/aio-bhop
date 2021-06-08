@@ -33,7 +33,7 @@ local hardStages = {} -- Insert stages you want to only have set styles on
 local pFOV; local pSens; local curStyle = "Auto"; local randomVal = 0; local rerolledThisStage = false; local rerollCount = 3; local pBlock; local pLight;
 local rayHeight = -5; local curStage = 1; local isSpec = false; local isRunning = false; local resetRecently = false; local daKeys = {}
 local gainVar; local gravVar; local originalGrav; local curStrafeDir = 1; local curFOV; local fovCons = 0; local timeGain = 0.5; local timeGainBuffer = false;
-local remotecall; local remoteadd; local remotesubscribe; local characterTransparency = 1; local movementHook; local sv; local pVelocity;
+local remotecall; local remoteadd; local remotesubscribe; local characterTransparency = 1; local movementHook; local sv; local pVelocity; local checkpointCheck
 local defaultAmbient; local defaultBrightness; local defaultOAmbient; local defaultFogColor; local defaultFogEnd;
 
 -- Camera Hooking and Third Person
@@ -67,6 +67,13 @@ local function setLightDefaults()
     defaultFogColor = l.FogColor
 end
 
+-- Player Jump Hooking
+local playJump
+local function fakePlayJump(part,pos)
+    checkpointCheck(part)
+    return playJump(part,pos)
+end
+
 -- getgc Functions and Tables
 for i,v in pairs(getgc(true)) do
     if type(v) == 'table' then
@@ -95,6 +102,10 @@ for i,v in pairs(getgc(true)) do
         end
         if rawget(v,"GetAngles") and rawget(v,"GetVelocity") then
             movementHook = v
+        end
+        if rawget(v,"PlayJump") then
+            playJump = v.PlayJump
+            v.PlayJump = fakePlayJump
         end
     end
     if type(v) == 'function' then
@@ -341,31 +352,33 @@ daButton.MouseButton1Down:Connect(function()
     end
 end)
 
+-- Checkpoint Check
+function checkpointCheck(part)
+    if string.find(part.Name, "Spawn") then
+        if curStage < tonumber(part.Name:sub(6,-1)) then
+            for i,v in pairs(rerollStages) do
+                if tonumber(part.Name:sub(6,-1)) == v then
+                    rerollCount = rerollCount + 1
+                end
+            end
+            curStage = tonumber(part.Name:sub(6,-1))
+            print("------------------")
+            print("Reached Stage " .. curStage)
+            print("------------------")
+            rerolledThisStage = false
+            randomizeStyle(true)
+        else
+            --print("Already passed stage " .. tonumber(part.Name:sub(6,-1)))
+        end
+    end
+end
+
 -- Ray Function
 local function rayFunction()
     local ray = Ray.new(pC.Torso.CFrame.Position, Vector3.new(0, rayHeight, 0))
     local hit = workspace:FindPartOnRayWithIgnoreList(ray, {pC})
-
     if hit then
-        if string.find(hit.Name, "Spawn") then
-            if curStage < tonumber(hit.Name:sub(6,8)) then
-                for i,v in pairs(rerollStages) do
-                    if tonumber(hit.Name:sub(6,8)) == v then
-                        rerollCount = rerollCount + 1
-                    end
-                end
-                curStage = tonumber(hit.Name:sub(6,8))
-                print("------------------")
-                print("Reached Stage " .. curStage)
-                print("------------------")
-                rerolledThisStage = false
-                randomizeStyle(true)
-            else
-                --print("Already passed stage " .. tonumber(hit.Name:sub(6,8)))
-            end
-        end
-    else
-        -- Do Nothing
+        checkpointCheck(hit)
     end
 end
 
@@ -433,7 +446,7 @@ RS.RenderStepped:Connect(function()
     daText.Text = "- { Current Style : " .. curStyle .. " } -"
     daButton.Text = "-- { Reroll : " .. rerollCount .. " Left } --"
 
-    if isRunning == true then
+    if isRunning then
         rayFunction()
         local currentVel = getupvalue(sv,1)
         local velX = currentVel.X
