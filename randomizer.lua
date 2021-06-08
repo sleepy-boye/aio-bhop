@@ -48,7 +48,7 @@ mt.__newindex = newcclosure(function(obj,property,val)
 end)
 setreadonly(mt,true)
 
--- Grab Map --CURRENTLY UNUSED, however may be needed for builderman
+-- Grab Map
 local function map()
     for _,v in next,workspace:GetChildren() do
         if v:FindFirstChild("Creator") and v:FindFirstChild("DisplayName") then
@@ -145,23 +145,64 @@ for _,f in pairs(getgc()) do
     end
 end
 
+-- Part Modification Section
+local pt
+local function updatePartTable()
+    -- Part Table
+    pt = {
+        partData=false,
+        RotVelocity=false,
+        changedEvent=false, --Irrelevant mostly
+        CanCollide=false,
+        CFrame=false,
+        Velocity=false,
+        Shape=false,
+        Size=false
+    }
+
+    -- Part Thing Yes
+    local randomPart
+    for _,v in pairs(map():GetDescendants()) do
+        if v.ClassName == "Part" and v.CanCollide and v.Anchored then
+            randomPart = v
+            break
+        end
+    end
+    for _,t in next,getgc(true) do
+        if type(t) == "table" then
+            if rawget(t,randomPart) then
+                for i,v in next,pt do
+                    if not v then
+                        pt[i] = t
+                        print(i)
+                        break
+                    end
+                end
+            end
+        end
+    end
+end
+
 -- Detect Map Change
 localsubscribe("PartData", function()
     wait()
     setLightDefaults()
+    spawn(function()
+        wait()
+        updatePartTable()
+    end)
 end)
 
--- Add Commands
-local function addCommand(name,validValues,func)
-    remoteadd(tostring(func),func)
-    remotecall("AddClientCommand",name,validValues,tostring(func))
+-- updatePart for Creating Parts
+local function updatePart(part)
+    pt.partData[part] = "" --God if i know
+    pt.RotVelocity[part] = Vector3.new(0,0,0)
+    pt.CanCollide[part] = part.CanCollide
+    pt.CFrame[part] = part.CFrame
+    pt.Velocity[part] = Vector3.new(0,0,0)
+    pt.Shape[part] = part.Shape
+    pt.Size[part] = part.Size
 end
-
--- Custom Commands
-addCommand("setdefs", {}, function()
-    pFOV = pInfo.BaseFOV
-    pSens = pInfo.Sensitivity
-end)
 
 -- Establish setGain
 local function setGain(num)
@@ -233,9 +274,9 @@ end
 
 -- Random Size Generator (For Atom Eve)
 local function randomSize()
-	randomNum = math.random(5,22)
-	randomNum = randomNum/10
-	return randomNum
+    randomNum = math.random(5,25)
+    randomNum = randomNum/10
+    return randomNum
 end
 
 -- Revolutionized Style Odds
@@ -243,31 +284,31 @@ local styleWeights = {
     HSW = 10,
     Auto = 10,
     Backwards = 1,
-    ["A-Only"] = 5,
+    ["A-Only"] = 7,
     ["W-Only"] = 2,
     Sideways = 3,
-    ["Foggy Nights"] = 5,
+    ["Foggy Nights"] = 6,
     Faste = 5,
     Slow = 6,
-    ["Timescale 0.5x"] = 5, -- Timescale removed on main
+    ["Timescale 0.5x"] = 6, -- Timescale removed on main
     ["Timescale 1.333x"] = 4, -- Timescale removed on main
     ["D-Only"] = 4,
     ["FOV 60"] = 4,
     ["Gain with Time"] = 5, -- 0.5x & every 0.1 sec increases 0.02 until speed < 18
-    ["Velocity Cap"] = 5, -- 40 Cap
-    ["Right Faste"] = 4, -- L: 0.5x, R: 3x
-    ["Left Faste"] = 4, -- L: 3x, R: 0.5x
+    ["Velocity Cap"] = 7, -- 40 Cap
+    ["Right Faste"] = 5, -- L: 0.5x, R: 3x
+    ["Left Faste"] = 5, -- L: 3x, R: 0.5x
     ["Invisible Blocks"] = 0, -- NF
-    Turbo = 4,
+    Turbo = 5,
     Flashlight = 0,  -- NF
     ["Landing Light"] = 0,  -- NF
     ["Drunk Mode"] = 0, -- NF
-    ["Low Gravity"] = 5,
-    ["Third Person"] = 5,
+    ["Low Gravity"] = 6,
+    ["Third Person"] = 6,
     ["Bomber Man"] = 0, -- NF
     ["Quake Pro"] = 4,
     ["Atom Eve"] = 5,
-    ["Builderman"] = 0,  -- NF
+    ["Builderman"] = 5000,  -- NF
     ["Slowfall"] = 4,
     ["Double Jump"] = 0, -- NF
 }
@@ -370,7 +411,6 @@ function checkpointCheck(part)
     elseif string.find(part.Name,"Spawn") then
         spawnNumber = tonumber(part.Name:sub(6,-1))
     end
-    print(spawnNumber)
     if spawnNumber then
         if curStage < spawnNumber then
             for _,v in pairs(rerollStages) do
@@ -398,6 +438,30 @@ local function rayFunction()
         checkpointCheck(hit)
     end
 end
+
+-- Add Commands
+local function addCommand(name,validValues,func)
+    remoteadd(tostring(func),func)
+    remotecall("AddClientCommand",name,validValues,tostring(func))
+end
+
+-- Custom Commands
+addCommand("setdefs", {}, function()
+    pFOV = pInfo.BaseFOV
+    pSens = pInfo.Sensitivity
+end)
+addCommand("setodds", {"String"}, function(yes)
+    local testTable = yes:split(' ')
+    local testStyle = testTable[1]
+    local testOdds = tonumber(testTable[2])
+    for i,v in pairs(styleWeights) do
+        if string.find(i:lower(), testStyle) then
+            local oldOdds = styleWeights[i]
+            styleWeights[i] = tonumber(testTable[2]);
+            return i .. "'s odds have changed from " .. oldOdds .. " to " .. styleWeights[i] .. "!"
+        end
+    end
+end)
 
 -- InputChanged for Left and Right Faste
 UIS.InputChanged:Connect(function(input)
@@ -429,48 +493,60 @@ UIS.InputBegan:Connect(function(input)
         wait(5)
         turboLabel.Text = "Turbo Ready!"; turboLabel.BackgroundColor3 = Color3.fromRGB(0, 255, 21);
         timeGainBuffer = false
-    elseif input.KeyCode == Enum.KeyCode.F and curStyle == "Atom Eve" then
-        local musTarget = mouse.Target
-        if musTarget and musTarget.Name == "Platform" or musTarget.Name == "Surf" and curShifted < 3 then
-            local bX = musTarget.Size.X; local bY = musTarget.Size.Y; local bZ = musTarget.Size.Z; local bName = musTarget.Name
-            curShifted = curShifted + 1
-			print("Currently shifted blocks: " .. curShifted)
-            movement2.UpdatePart(musTarget,{Size=Vector3.new(bX * randomSize(), bY * randomSize(), bZ * randomSize())})
-            movement2.UpdatePart(musTarget,{Name="Shifted"})
-			wait(3)
-			curShifted = curShifted - 1
-			print("Shifted block reverted to normal")
-			movement2.UpdatePart(musTarget,{Size=Vector3.new(bX, bY, bZ)})
-            movement2.UpdatePart(musTarget,{Name=bName})
-        end
     end
 end)
 
 -- Bomb Style Logic
 mouse.Button1Down:Connect(function()
-    if curStyle ~= "Quake Pro" then
-        return
+    if curStyle == "Atom Eve" then
+        local musTarget = mouse.Target
+        if musTarget and musTarget.Name == "Platform" or musTarget.Name == "Surf" and curShifted < 3 then
+            local bX = musTarget.Size.X; local bY = musTarget.Size.Y; local bZ = musTarget.Size.Z; local bName = musTarget.Name
+            curShifted = curShifted + 1
+            print("Currently shifted blocks: " .. curShifted)
+            movement2.UpdatePart(musTarget,{Size=Vector3.new(bX * randomSize(), bY * randomSize(), bZ * randomSize())})
+            movement2.UpdatePart(musTarget,{Name="Shifted"})
+            wait(3)
+            curShifted = curShifted - 1
+            print("Shifted block reverted to normal")
+            movement2.UpdatePart(musTarget,{Size=Vector3.new(bX, bY, bZ)})
+            movement2.UpdatePart(musTarget,{Name=bName})
+        end
+    elseif curStyle == "Builderman" then
+        local toAdd = Instance.new("Part")
+        toAdd.Name = "Builderman Block"
+        toAdd.Anchored = true
+        toAdd.Size = Vector3.new(3,1,3)
+        toAdd.Position = workspace.Characters[game.Players.LocalPlayer.Name].Torso.Position - Vector3.new(0,3.5,0)
+        toAdd.Parent = map()
+        updatePart(toAdd)
+        wait(5)
+        movement2.UpdatePart(toAdd,{CanCollide=False})
+        toAdd:Destroy()
+    elseif curStyle == "Quake Pro" then
+        local hitFeedback = Instance.new("Part",workspace.Characters)
+        hitFeedback.Anchored = true
+        hitFeedback.Name = "QuakePro Hit Feedback"
+        hitFeedback.Size = Vector3.new(.35,.35,.35)
+        hitFeedback.Position = mouse.Hit.p
+        hitFeedback.Transparency = .2
+        hitFeedback.Color = Color3.new(.2,.2,1)
+        debris:AddItem(hitFeedback,1)
+        local maxDistanceLimit = 30
+        local distanceToOrigin = (mouse.Origin.p-mouse.Hit.p).magnitude
+        if distanceToOrigin >= maxDistanceLimit then
+            return --Too far
+        end
+        hitFeedback.Color = Color3.new(1,.2,.2)
+        local launchDistance = math.asin((maxDistanceLimit-distanceToOrigin)/maxDistanceLimit)*maxDistanceLimit
+        local launchDistanceVector = (-mouse.Origin.LookVector)*launchDistance
+        setupvalue(sv,1,getupvalue(sv,1)+launchDistanceVector)
     end
-    local hitFeedback = Instance.new("Part",workspace.Characters)
-    hitFeedback.Anchored = true
-    hitFeedback.Name = "QuakePro Hit Feedback"
-    hitFeedback.Size = Vector3.new(.35,.35,.35)
-    hitFeedback.Position = mouse.Hit.p
-    hitFeedback.Transparency = .2
-    hitFeedback.Color = Color3.new(.2,.2,1)
-    debris:AddItem(hitFeedback,1)
-    local maxDistanceLimit = 30
-    local distanceToOrigin = (mouse.Origin.p-mouse.Hit.p).magnitude
-    if distanceToOrigin >= maxDistanceLimit then
-        return --Too far
-    end
-    hitFeedback.Color = Color3.new(1,.2,.2)
-    local launchDistance = math.asin((maxDistanceLimit-distanceToOrigin)/maxDistanceLimit)*maxDistanceLimit
-    local launchDistanceVector = (-mouse.Origin.LookVector)*launchDistance
-    setupvalue(sv,1,getupvalue(sv,1)+launchDistanceVector)
 end)
 
+wait()
 setLightDefaults()
+updatePartTable()
 
 -- Main Function
 RS.RenderStepped:Connect(function()
