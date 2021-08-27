@@ -325,7 +325,7 @@ local styleSettings = {
     ["W-Only"] = {keys={1,0,0,0}},
     Sideways = {keys={1,0,1,0}},
     ["Foggy Nights"] = {light=2},
-    Faste = {gains=3},
+    Faste = {gains=10/2.7},
     Slow = {gains=0.5},
     ["Timescale 0.5x"] = {tscale=0.5},
     ["Timescale 1.333x"] = {tscale=1.333},
@@ -470,10 +470,10 @@ UIS.InputChanged:Connect(function(input)
         setGain(0.5)
         curStrafeDir = 0
     elseif UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X < 0 and curStrafeDir == 0 and curStyle == "Left Faste" then
-        setGain(3)
+        setGain(10/2.7)
         curStrafeDir = 1
     elseif UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X > 0 and curStrafeDir == 0 and curStyle == "Right Faste" then
-        setGain(3)
+        setGain(10/2.7)
         curStrafeDir = 1
     elseif UIS:IsKeyDown(Enum.KeyCode.Space) and delta.X < 0 and curStrafeDir == 1 and curStyle == "Right Faste" then
         setGain(0.5)
