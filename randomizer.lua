@@ -370,7 +370,7 @@ local function changeToStyle(style)
     curStyle = style
     local styleInfo = styleSettings[style]
     local keyTable = styleInfo["keys"] or {1,1,1,1}
-    remotecall('Chatted','Rolled '..style..'!')
+    --remotecall('Chatted','Rolled '..style..'!')
     setKeys(keyTable[1],keyTable[2],keyTable[3],keyTable[4])
     setGain(styleInfo["gains"] or 1)
     setLightMode(styleInfo["light"] or 1)
@@ -461,6 +461,13 @@ addCommand("setodds", {"String"}, function(yes)
             return i .. "'s odds have changed from " .. oldOdds .. " to " .. styleWeights[i] .. "!"
         end
     end
+end)
+addCommand("setstyle", {"String"}, function(v)
+    if styleWeights[v] then
+        changeToStyle(v)
+        return "Set style to "..v
+    end
+    return "The style "..v.." doesnt exist"
 end)
 
 -- InputChanged for Left and Right Faste
