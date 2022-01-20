@@ -605,7 +605,7 @@ RS.RenderStepped:Connect(function()
 
         if curStyle == "Slowfall" then
             if velY < 0 then
-                setGravity (0.4)
+                setGravity(0.4)
             else
                 setGravity(1)
             end
